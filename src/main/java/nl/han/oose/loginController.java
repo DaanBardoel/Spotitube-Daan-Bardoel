@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 public class loginController {
 
     @POST
-    @Path("login")
+    @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response login(loginCredentials credentials) {
