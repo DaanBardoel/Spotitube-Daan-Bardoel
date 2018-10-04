@@ -3,11 +3,11 @@ package nl.han.oose;
 public class Token {
 
     private String token;
-    private String username;
+    private String user;
 
-    public Token(String username, String token) {
-        this.username = username;
+    public Token(String token, String user) {
         this.token = token;
+        this.user = user;
     }
 
     public String getToken() {
@@ -18,11 +18,11 @@ public class Token {
         this.token = token;
     }
 
-    public String getUsername() {
-        return username;
+    public String getuser() {
+        return user;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setuser(String user) {
+        this.user = user;
     }
 }

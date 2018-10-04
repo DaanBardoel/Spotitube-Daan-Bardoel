@@ -2,23 +2,15 @@ package nl.han.oose;
 
 public class loginCredentials {
 
-    private String username;
+    private String user;
     private String password;
 
-    public loginCredentials() {
+    public String getUser() {
+        return user;
     }
 
-    public loginCredentials(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getPassword() {
@@ -27,5 +19,13 @@ public class loginCredentials {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "loginCredentials{" +
+                "user='" + user + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

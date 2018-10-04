@@ -12,11 +12,12 @@ public class loginController {
 
     @POST
     @Path("/login")
-    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response login(loginCredentials credentials) {
-        if (credentials.getUsername().equals("daan") && credentials.getPassword().equals("password")) {
-            Token token = new Token(credentials.getUsername(), "1234-1234-1234");
+        System.out.println(credentials);
+        if (credentials.getUser().equals("daan") && credentials.getPassword().equals("password")) {
+            Token token = new Token(credentials.getUser(), "1234-1234-1234");
             return Response.status(Response.Status.OK).entity(token).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).build();
