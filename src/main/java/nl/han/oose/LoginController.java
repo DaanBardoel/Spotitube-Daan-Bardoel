@@ -7,19 +7,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/login")
+@Path("/")
 public class LoginController {
 
     @POST
+    @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(LoginCredentials credentials) {
-        System.out.println(credentials);
-        if (credentials.getUser().equals("daan") && credentials.getPassword().equals("password")) {
-            Token token = new Token("1234-1234-1234", credentials.getUser());
-            return Response.status(Response.Status.OK).entity(token).build();
-        } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+    public Response loginResponse(LoginCredentials creds) {
+        //try catch block
+        loginHandler handler = new loginHandler();
+        try {
+            handler.login(creds);
+        } catch (LoginException e) {
+            Response.status(Response.Status.UNAUTHORIZED).build();
         }
+        return Response.status(Response.Status.OK).entity(handler).build();
     }
 }
