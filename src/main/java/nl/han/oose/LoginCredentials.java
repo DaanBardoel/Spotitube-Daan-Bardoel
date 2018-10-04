@@ -1,6 +1,6 @@
 package nl.han.oose;
 
-public class loginCredentials {
+public class LoginCredentials {
 
     private String user;
     private String password;
