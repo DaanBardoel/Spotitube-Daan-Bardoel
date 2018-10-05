@@ -1,5 +1,6 @@
 package nl.han.oose.Login;
 
+import nl.han.oose.LocalStorage;
 import nl.han.oose.Token;
 
 import javax.enterprise.inject.Default;
@@ -11,7 +12,9 @@ public class LoginHandlerImpl implements LoginHandler {
     public Token login(LoginCredentials credentials) throws LoginException {
         //create exception with if-else statement
         if (credentials.getUser().equals("daan") && credentials.getPassword().equals("password")) {
-            return new Token("1234-1234-1234", credentials.getUser());
+            Token token = new Token("1234-1234-1234", credentials.getUser());
+            LocalStorage.setTokens(token);
+            return token;
         } else {
             throw new LoginException("credentials not correct!");
         }

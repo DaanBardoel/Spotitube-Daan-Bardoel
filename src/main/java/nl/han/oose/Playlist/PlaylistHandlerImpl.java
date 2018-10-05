@@ -20,7 +20,7 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
             playlists.add(playlist1);
             return playlists;
         } else {
-            throw new PlaylistException();
+            throw new PlaylistException("Incorrect token!");
         }
     }
 
