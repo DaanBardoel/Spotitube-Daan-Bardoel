@@ -18,10 +18,10 @@ public class LoginController {
         //try catch block
         loginHandler handler = new loginHandler();
         try {
-            handler.login(creds);
+            return Response.status(Response.Status.OK).entity(handler.login(creds)).build();
         } catch (LoginException e) {
-            Response.status(Response.Status.UNAUTHORIZED).build();
+            String message = e.getMessage();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(message).build();
         }
-        return Response.status(Response.Status.OK).entity(handler).build();
     }
 }
