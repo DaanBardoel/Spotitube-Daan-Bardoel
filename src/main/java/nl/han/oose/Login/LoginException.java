@@ -1,6 +1,6 @@
-package nl.han.oose;
+package nl.han.oose.Login;
 
-public class LoginException extends Exception {
+public class LoginException extends RuntimeException {
 
     private String exceptionname;
 

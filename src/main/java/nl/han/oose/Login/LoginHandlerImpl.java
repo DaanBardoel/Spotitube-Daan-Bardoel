@@ -1,8 +1,13 @@
-package nl.han.oose;
+package nl.han.oose.Login;
 
-public class loginHandler {
+import nl.han.oose.Token;
 
+import javax.enterprise.inject.Default;
 
+@Default
+public class LoginHandlerImpl implements LoginHandler {
+
+    @Override
     public Token login(LoginCredentials credentials) throws LoginException {
         //create exception with if-else statement
         if (credentials.getUser().equals("daan") && credentials.getPassword().equals("password")) {
