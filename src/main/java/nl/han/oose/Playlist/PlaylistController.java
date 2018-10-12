@@ -19,8 +19,10 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsResponse(@QueryParam("token") String token) {
 
+        PlaylistReturn playlistReturn = new PlaylistReturn(handler.getPlayListStorage(token));
+
         try {
-            return Response.status(Response.Status.OK).entity(handler.getPlayListStorage(token)).build();
+            return Response.status(Response.Status.OK).entity(playlistReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
