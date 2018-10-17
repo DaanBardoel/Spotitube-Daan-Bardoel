@@ -1,7 +1,7 @@
 package nl.han.oose.Login;
 
 import nl.han.oose.LocalStorage;
-import nl.han.oose.Token;
+import nl.han.oose.entity.Token;
 
 import javax.enterprise.inject.Alternative;
 

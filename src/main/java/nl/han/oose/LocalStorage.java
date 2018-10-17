@@ -1,5 +1,7 @@
 package nl.han.oose;
 
+import nl.han.oose.entity.Token;
+
 import java.util.ArrayList;
 import java.util.List;
 
