@@ -25,28 +25,14 @@ public class AccountDAO {
         ) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
+                int userId = resultSet.getInt("userID");
                 String user = resultSet.getString("user");
                 String password = resultSet.getString("password");
-                accounts.add(new Account(user, password));
+                accounts.add(new Account(userId, user, password));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return accounts;
     }
-
-    public void persistAccount(Account account) {
-        try (
-                Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        "INSERT INTO ACCOUNT ([user],password) VALUES (?,?)");
-        ) {
-            statement.setString(1, account.getUser());
-            statement.setString(2, account.getPassword());
-            statement.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 }

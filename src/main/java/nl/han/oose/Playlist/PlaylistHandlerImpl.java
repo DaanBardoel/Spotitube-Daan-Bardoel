@@ -1,7 +1,7 @@
 package nl.han.oose.Playlist;
 
-import nl.han.oose.LocalStorage;
-import nl.han.oose.Token;
+import nl.han.oose.Persistence.TokenDAO;
+import nl.han.oose.entity.Token;
 
 import javax.enterprise.inject.Default;
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
 
     @Override
     public boolean doesTokenExistInList(String tokenstring) {
-        List<Token> tokens = LocalStorage.getTokens();
+        TokenDAO tdao = new TokenDAO();
+        List<Token> tokens = tdao.getAllTokens();
         for (Token token : tokens) {
             if (token.getToken().equals(tokenstring)) {
                 return true;

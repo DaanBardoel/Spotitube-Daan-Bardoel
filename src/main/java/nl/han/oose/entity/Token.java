@@ -3,11 +3,13 @@ package nl.han.oose.entity;
 public class Token {
 
     private String token;
-    private String user;
+    private int user;
+    private String dateString;
 
-    public Token(String token, String user) {
+    public Token(String token, int user, String dateString) {
         this.token = token;
         this.user = user;
+        this.dateString = dateString;
     }
 
     public String getToken() {
@@ -18,11 +20,19 @@ public class Token {
         this.token = token;
     }
 
-    public String getuser() {
+    public int getuser() {
         return user;
     }
 
-    public void setuser(String user) {
+    public void setuser(int user) {
         this.user = user;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }
