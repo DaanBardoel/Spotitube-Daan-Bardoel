@@ -1,26 +1,13 @@
-package nl.han.oose.entity;
+package nl.han.oose.Login;
 
-public class Account {
+public class AccountOnlyCredentials {
 
-    private int userId;
     private String user;
     private String password;
 
-    public Account(int userId, String user, String password) {
-        this.userId = userId;
+    public AccountOnlyCredentials(String user, String password) {
         this.user = user;
         this.password = password;
-    }
-
-    public Account() {
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getUser() {

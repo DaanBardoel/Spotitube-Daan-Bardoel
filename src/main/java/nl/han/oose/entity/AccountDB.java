@@ -1,13 +1,26 @@
-package nl.han.oose.Login;
+package nl.han.oose.entity;
 
-public class User {
+public class AccountDB {
 
+    private int userId;
     private String user;
     private String password;
 
-    public User(String user, String password) {
+    public AccountDB(int userId, String user, String password) {
+        this.userId = userId;
         this.user = user;
         this.password = password;
+    }
+
+    public AccountDB() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUser() {

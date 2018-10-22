@@ -1,6 +1,6 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.Token;
+import nl.han.oose.entity.TokenDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +17,8 @@ public class TokenDAO {
         connectionFactory = new ConnectionFactory();
     }
 
-    public List<Token> getAllTokens() {
-        List<Token> tokens = new ArrayList<>();
+    public List<TokenDB> getAllTokens() {
+        List<TokenDB> tokenDBs = new ArrayList<>();
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Token");
@@ -28,24 +28,24 @@ public class TokenDAO {
                 int user = resultSet.getInt("userID");
                 String token = resultSet.getString("token");
                 String dateString = resultSet.getString("validUntil");
-                tokens.add(new Token(token, user, dateString));
+                tokenDBs.add(new TokenDB(token, user, dateString));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
 
         }
-        return tokens;
+        return tokenDBs;
     }
 
-    public void persistToken(Token token) {
+    public void persistToken(TokenDB tokenDB) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "INSERT  INTO Token (userID, token, validUntil) VALUES (?,?,?)");
         ) {
-            statement.setInt(1, token.getuser());
-            statement.setString(2, token.getToken());
-            statement.setString(3, token.getDateString());
+            statement.setInt(1, tokenDB.getuser());
+            statement.setString(2, tokenDB.getToken());
+            statement.setString(3, tokenDB.getDateString());
             statement.execute();
 
         } catch (SQLException e) {
@@ -53,13 +53,13 @@ public class TokenDAO {
         }
     }
 
-    public void deleteToken(Token token) {
+    public void deleteToken(TokenDB tokenDB) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "DELETE FROM Token WHERE userID = (?)");
         ) {
-            statement.setInt(1, token.getuser());
+            statement.setInt(1, tokenDB.getuser());
             statement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);

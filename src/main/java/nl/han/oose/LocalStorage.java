@@ -1,19 +1,19 @@
 package nl.han.oose;
 
-import nl.han.oose.entity.Token;
+import nl.han.oose.entity.TokenDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LocalStorage {
 
-    private static List<Token> tokens = new ArrayList<>();
+    private static List<TokenDB> tokens = new ArrayList<>();
 
-    public static List<Token> getTokens() {
+    public static List<TokenDB> getTokens() {
         return tokens;
     }
 
-    public static void setTokens(Token token) {
-        LocalStorage.tokens.add(token);
+    public static void setTokens(TokenDB tokenDB) {
+        LocalStorage.tokens.add(tokenDB);
     }
 }

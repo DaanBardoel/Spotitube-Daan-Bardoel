@@ -2,8 +2,8 @@ package nl.han.oose.Login;
 
 import nl.han.oose.Persistence.AccountDAO;
 import nl.han.oose.Persistence.TokenDAO;
-import nl.han.oose.entity.Account;
-import nl.han.oose.entity.Token;
+import nl.han.oose.entity.AccountDB;
+import nl.han.oose.entity.TokenDB;
 
 import javax.enterprise.inject.Default;
 import java.text.ParseException;
@@ -18,38 +18,31 @@ import java.util.Random;
 public class LoginHandlerImpl implements LoginHandler {
 
     @Override
-    public Token login(LoginCredentials credentials) throws LoginException {
-        User account = new User(credentials.getUser(), credentials.getPassword());
+    public TokenOnlyReturnValuesForResponse login(LoginCredentials credentials) throws LoginException {
+        AccountOnlyCredentials account = new AccountOnlyCredentials(credentials.getUser(), credentials.getPassword());
         AccountDAO dao = new AccountDAO();
-        List<Account> accountsList = dao.getAllAccounts();
-        for (Account accountIndex : accountsList) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-            if (accountIndex.getUser().equals(account.getUser()) && accountIndex.getPassword().equals(account.getPassword())) {
+        List<AccountDB> accountsList = dao.getAllAccounts();
+        for (AccountDB accountDBIndex : accountsList) {
+            if (accountDBIndex.getUser().equals(account.getUser()) && accountDBIndex.getPassword().equals(account.getPassword())) {
                 TokenDAO tdao = new TokenDAO();
-                List<Token> tokenList = tdao.getAllTokens();
-                for (Token tokenIndex : tokenList) {
-                    if (tokenIndex.getuser() == accountIndex.getUserId()) {
-                        String databaseDateString = tokenIndex.getDateString();
-                        try {
-                            Date databaseDate = sdf.parse(databaseDateString);
-                            Date date = new Date();
-                            if (date.after(databaseDate)) {
-                                tdao.deleteToken(tokenIndex);
-
-                                Token token = new Token(this.getToken(), accountIndex.getUserId(), this.getInsertIntoDatabaseString(sdf));
-                                tdao.persistToken(token);
-                                return token;
-                            } else {
-                                return tokenIndex;
-                            }
-                        } catch (ParseException e) {
-                            throw new LoginException("incorrect date in database");
+                List<TokenDB> tokenDBList = tdao.getAllTokens();
+                for (TokenDB tokenDBIndex : tokenDBList) {
+                    if (tokenDBIndex.getuser() == accountDBIndex.getUserId()) {
+                        String databaseDateString = tokenDBIndex.getDateString();
+                        Date date = new Date();
+                        if (date.after(this.getDatabaseDate(databaseDateString))) {
+                            tdao.deleteToken(tokenDBIndex);
+                            TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
+                            tdao.persistToken(tokenDB);
+                            return new TokenOnlyReturnValuesForResponse(tokenDB.getToken(), tokenDB.getuser());
+                        } else {
+                            return new TokenOnlyReturnValuesForResponse(tokenDBIndex.getToken(), tokenDBIndex.getuser());
                         }
                     }
                 }
-                Token token = new Token(this.getToken(), accountIndex.getUserId(), this.getInsertIntoDatabaseString(sdf));
-                tdao.persistToken(token);
-                return token;
+                TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
+                tdao.persistToken(tokenDB);
+                return new TokenOnlyReturnValuesForResponse(tokenDB.getToken(), tokenDB.getuser());
             }
         }
         throw new LoginException("credentials not correct!");
@@ -66,10 +59,20 @@ public class LoginHandlerImpl implements LoginHandler {
         return token.toString();
     }
 
-    private String getInsertIntoDatabaseString(SimpleDateFormat sdf) {
+    private String getInsertIntoDatabaseString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         int validUntilTimeForNewToken = 1;
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(validUntilTimeForNewToken);
         Date insertDatabaseDate = Date.from(tomorrow.atZone(ZoneId.systemDefault()).toInstant());
         return sdf.format(insertDatabaseDate);
+    }
+
+    private Date getDatabaseDate(String databaseDateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        try {
+            return sdf.parse(databaseDateString);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

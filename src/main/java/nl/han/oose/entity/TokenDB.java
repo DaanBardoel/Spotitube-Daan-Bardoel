@@ -1,12 +1,12 @@
 package nl.han.oose.entity;
 
-public class Token {
+public class TokenDB {
 
     private String token;
     private int user;
     private String dateString;
 
-    public Token(String token, int user, String dateString) {
+    public TokenDB(String token, int user, String dateString) {
         this.token = token;
         this.user = user;
         this.dateString = dateString;
