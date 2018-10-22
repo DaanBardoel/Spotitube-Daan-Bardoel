@@ -18,7 +18,7 @@ import java.util.Random;
 public class LoginHandlerImpl implements LoginHandler {
 
     @Override
-    public TokenOnlyReturnValuesForResponse login(LoginCredentials credentials) throws LoginException {
+    public Token login(LoginCredentials credentials) throws LoginException {
         AccountOnlyCredentials account = new AccountOnlyCredentials(credentials.getUser(), credentials.getPassword());
         AccountDAO dao = new AccountDAO();
         List<AccountDB> accountsList = dao.getAllAccounts();
@@ -34,15 +34,15 @@ public class LoginHandlerImpl implements LoginHandler {
                             tdao.deleteToken(tokenDBIndex);
                             TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
                             tdao.persistToken(tokenDB);
-                            return new TokenOnlyReturnValuesForResponse(tokenDB.getToken(), tokenDB.getuser());
+                            return new Token(tokenDB.getToken(), tokenDB.getuser());
                         } else {
-                            return new TokenOnlyReturnValuesForResponse(tokenDBIndex.getToken(), tokenDBIndex.getuser());
+                            return new Token(tokenDBIndex.getToken(), tokenDBIndex.getuser());
                         }
                     }
                 }
                 TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
                 tdao.persistToken(tokenDB);
-                return new TokenOnlyReturnValuesForResponse(tokenDB.getToken(), tokenDB.getuser());
+                return new Token(tokenDB.getToken(), tokenDB.getuser());
             }
         }
         throw new LoginException("credentials not correct!");

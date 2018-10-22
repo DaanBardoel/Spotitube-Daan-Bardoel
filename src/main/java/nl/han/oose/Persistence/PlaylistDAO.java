@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class playlistDAO {
+public class PlaylistDAO {
 
     private ConnectionFactory connectionFactory;
 
-    public playlistDAO() {
+    public PlaylistDAO() {
         connectionFactory = new ConnectionFactory();
     }
 

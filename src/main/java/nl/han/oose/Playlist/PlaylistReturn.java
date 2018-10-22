@@ -4,8 +4,8 @@ import java.util.List;
 
 public class PlaylistReturn {
 
-    private int length = 5000;
     private List<Playlist> playlists;
+    private int length = 5000;
 
     public PlaylistReturn(List<Playlist> playlists) {
         this.playlists = playlists;

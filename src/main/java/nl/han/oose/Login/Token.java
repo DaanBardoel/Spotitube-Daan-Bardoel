@@ -1,11 +1,11 @@
 package nl.han.oose.Login;
 
-public class TokenOnlyReturnValuesForResponse {
+public class Token {
 
     private String token;
     private int user;
 
-    public TokenOnlyReturnValuesForResponse(String token, int user) {
+    public Token(String token, int user) {
         this.token = token;
         this.user = user;
     }
