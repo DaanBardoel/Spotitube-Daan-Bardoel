@@ -1,6 +1,6 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.TracksDB;
+import nl.han.oose.entity.TrackDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,17 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TracksDAO implements ITracksDAO {
+public class TrackDAO implements ITracksDAO {
 
     private ConnectionFactory connectionFactory;
 
-    public TracksDAO() {
+    public TrackDAO() {
         connectionFactory = new ConnectionFactory();
     }
 
     @Override
-    public List<TracksDB> getAllTracks() {
-        List<TracksDB> tracks;
+    public List<TrackDB> getAllTracks() {
+        List<TrackDB> tracks;
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tracks");
@@ -34,8 +34,8 @@ public class TracksDAO implements ITracksDAO {
     }
 
 
-    public List<TracksDB> getAllTracksExceptInPlaylistTracks() {
-        List<TracksDB> tracks;
+    public List<TrackDB> getAllTracksExceptInPlaylistTracks() {
+        List<TrackDB> tracks;
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tracks WHERE numberID NOT IN (SELECT trackID FROM Playlistcontent)");
@@ -49,12 +49,12 @@ public class TracksDAO implements ITracksDAO {
         return tracks;
     }
 
-    private List<TracksDB> resultsetMethod(ResultSet resultSet) throws SQLException {
+    private List<TrackDB> resultsetMethod(ResultSet resultSet) throws SQLException {
 
-        List<TracksDB> tracks = new ArrayList<>();
+        List<TrackDB> tracks = new ArrayList<>();
 
         while (resultSet.next()) {
-            int numberID = resultSet.getInt("numberID");
+            int id = resultSet.getInt("numberID");
             String title = resultSet.getString("title");
             String performer = resultSet.getString("performer");
             int duration = resultSet.getInt("duration");
@@ -63,7 +63,7 @@ public class TracksDAO implements ITracksDAO {
             String publicationDate = resultSet.getString("publicationDate");
             String description = resultSet.getString("description");
             boolean offlineAvailable = resultSet.getBoolean("offlineAvailable");
-            tracks.add(new TracksDB(numberID, title, performer, duration, albumName, playcount, publicationDate, description, offlineAvailable));
+            tracks.add(new TrackDB(id, title, performer, duration, albumName, playcount, publicationDate, description, offlineAvailable));
         }
         return tracks;
     }

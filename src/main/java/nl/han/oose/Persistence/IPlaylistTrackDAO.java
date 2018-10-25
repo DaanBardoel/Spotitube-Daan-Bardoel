@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IPlaylistTrackDAO {
     List<PlaylistTrackDB> getAllPlaylistTracks();
+
+    void insertTrackIntoPlaylistTrack(int playlistID, int trackID);
 }

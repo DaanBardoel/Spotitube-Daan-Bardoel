@@ -1,7 +1,7 @@
 package nl.han.oose.tracks;
 
-import nl.han.oose.Persistence.TracksDAO;
-import nl.han.oose.entity.TracksDB;
+import nl.han.oose.Persistence.TrackDAO;
+import nl.han.oose.entity.TrackDB;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.List;
 public class TracksHandlerImpl implements TracksHandler {
 
     @Inject
-    TracksDAO tracksDAO;
+    TrackDAO trackDAO;
 
     @Override
-    public List<TracksDB> getAllTracksExceptFromCurrentPlaylist(int playlistID, String token) {
-        return tracksDAO.getAllTracksExceptInPlaylistTracks();
+    public List<TrackDB> getAllTracksExceptFromCurrentPlaylist(int playlistID, String token) {
+        return trackDAO.getAllTracksExceptInPlaylistTracks();
     }
 }

@@ -9,6 +9,7 @@ public class PlaylistReturn {
 
     public PlaylistReturn(List<Playlist> playlists, int length) {
         this.playlists = playlists;
+        this.length = length;
     }
 
     public int getLength() {

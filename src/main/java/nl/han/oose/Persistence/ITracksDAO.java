@@ -1,9 +1,9 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.TracksDB;
+import nl.han.oose.entity.TrackDB;
 
 import java.util.List;
 
 public interface ITracksDAO {
-    List<TracksDB> getAllTracks();
+    List<TrackDB> getAllTracks();
 }

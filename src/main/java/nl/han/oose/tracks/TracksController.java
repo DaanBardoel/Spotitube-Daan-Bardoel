@@ -17,11 +17,13 @@ public class TracksController {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response tracksGetResponse(@QueryParam("forPlaylist") int playlistID, @QueryParam("token") String token) {
+
+        TrackReturn trackReturn = new TrackReturn(tracksHandler.getAllTracksExceptFromCurrentPlaylist(playlistID, token));
+
         try {
-            return Response.status(Response.Status.OK).entity(tracksHandler.getAllTracksExceptFromCurrentPlaylist(playlistID, token)).build();
+            return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (TracksException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
     }
-
 }

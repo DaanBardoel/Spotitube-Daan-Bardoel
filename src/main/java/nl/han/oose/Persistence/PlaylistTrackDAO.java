@@ -35,4 +35,18 @@ public class PlaylistTrackDAO implements IPlaylistTrackDAO {
         }
         return playlistTrackDBs;
     }
+
+    @Override
+    public void insertTrackIntoPlaylistTrack(int playlistID, int trackID) {
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO Playlistcontent(playlistID, trackID) VALUES (?,?)");
+        ) {
+            statement.setInt(1, playlistID);
+            statement.setInt(2, trackID);
+            statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

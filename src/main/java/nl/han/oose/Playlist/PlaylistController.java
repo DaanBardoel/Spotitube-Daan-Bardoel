@@ -1,6 +1,9 @@
 package nl.han.oose.Playlist;
 
 
+import nl.han.oose.entity.TrackDB;
+import nl.han.oose.tracks.TrackReturn;
+
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -29,8 +32,24 @@ public class PlaylistController {
     @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksForPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID) {
+
+        TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, playlistID));
         try {
-            return Response.status(Response.Status.OK).entity(handler.getAllTracksForThisPlaylist(token, playlistID)).build();
+            return Response.status(Response.Status.OK).entity(trackReturn).build();
+        } catch (PlaylistException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/{id}/tracks")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response InsertTrackIntoPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID, TrackDB track) {
+
+        TrackReturn trackReturn = new TrackReturn(handler.addTracksToGivenPlaylist(token, playlistID, track));
+        try {
+            return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
