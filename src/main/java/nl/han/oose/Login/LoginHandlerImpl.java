@@ -1,6 +1,8 @@
 package nl.han.oose.Login;
 
 import nl.han.oose.Persistence.AccountDAO;
+import nl.han.oose.Persistence.IAccountDAO;
+import nl.han.oose.Persistence.ITokenDAO;
 import nl.han.oose.Persistence.TokenDAO;
 import nl.han.oose.entity.AccountDB;
 import nl.han.oose.entity.TokenDB;
@@ -18,13 +20,12 @@ import java.util.Random;
 public class LoginHandlerImpl implements LoginHandler {
 
     @Override
-    public Token login(LoginCredentials credentials) throws LoginException {
-        AccountOnlyCredentials account = new AccountOnlyCredentials(credentials.getUser(), credentials.getPassword());
-        AccountDAO dao = new AccountDAO();
+    public TokenOnlyForReturn login(LoginCredentials credentials) throws LoginException {
+        IAccountDAO dao = new AccountDAO();
         List<AccountDB> accountsList = dao.getAllAccounts();
         for (AccountDB accountDBIndex : accountsList) {
-            if (accountDBIndex.getUser().equals(account.getUser()) && accountDBIndex.getPassword().equals(account.getPassword())) {
-                TokenDAO tdao = new TokenDAO();
+            if (accountDBIndex.getUser().equals(credentials.getUser()) && accountDBIndex.getPassword().equals(credentials.getPassword())) {
+                ITokenDAO tdao = new TokenDAO();
                 List<TokenDB> tokenDBList = tdao.getAllTokens();
                 for (TokenDB tokenDBIndex : tokenDBList) {
                     if (tokenDBIndex.getuser() == accountDBIndex.getUserId()) {
@@ -34,15 +35,15 @@ public class LoginHandlerImpl implements LoginHandler {
                             tdao.deleteToken(tokenDBIndex);
                             TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
                             tdao.persistToken(tokenDB);
-                            return new Token(tokenDB.getToken(), tokenDB.getuser());
+                            return new TokenOnlyForReturn(tokenDB.getToken(), accountDBIndex.getUser());
                         } else {
-                            return new Token(tokenDBIndex.getToken(), tokenDBIndex.getuser());
+                            return new TokenOnlyForReturn(tokenDBIndex.getToken(), accountDBIndex.getUser());
                         }
                     }
                 }
                 TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
                 tdao.persistToken(tokenDB);
-                return new Token(tokenDB.getToken(), tokenDB.getuser());
+                return new TokenOnlyForReturn(tokenDB.getToken(), accountDBIndex.getUser());
             }
         }
         throw new LoginException("credentials not correct!");

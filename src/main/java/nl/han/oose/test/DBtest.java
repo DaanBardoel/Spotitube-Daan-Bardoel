@@ -1,6 +1,7 @@
 package nl.han.oose.test;
 
 import nl.han.oose.Persistence.AccountDAO;
+import nl.han.oose.Persistence.IAccountDAO;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,7 +15,7 @@ public class DBtest {
     @GET()
     @Produces(MediaType.APPLICATION_JSON)
     public Response testDbResponse() {
-        AccountDAO dao = new AccountDAO();
+        IAccountDAO dao = new AccountDAO();
         return Response.status(Response.Status.OK).entity(dao.getAllAccounts()).build();
     }
 }

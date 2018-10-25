@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenDAO {
+public class TokenDAO implements ITokenDAO {
 
     private ConnectionFactory connectionFactory;
 
@@ -17,6 +17,7 @@ public class TokenDAO {
         connectionFactory = new ConnectionFactory();
     }
 
+    @Override
     public List<TokenDB> getAllTokens() {
         List<TokenDB> tokenDBs = new ArrayList<>();
         try (
@@ -37,6 +38,7 @@ public class TokenDAO {
         return tokenDBs;
     }
 
+    @Override
     public void persistToken(TokenDB tokenDB) {
         try (
                 Connection connection = connectionFactory.getConnection();
@@ -53,6 +55,7 @@ public class TokenDAO {
         }
     }
 
+    @Override
     public void deleteToken(TokenDB tokenDB) {
         try (
                 Connection connection = connectionFactory.getConnection();

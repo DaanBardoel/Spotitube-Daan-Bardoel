@@ -4,7 +4,7 @@
 //import nl.han.oose.Persistence.AccountDAO;
 //import nl.han.oose.Persistence.TokenDAO;
 //import nl.han.oose.entity.Account;
-//import nl.han.oose.entity.Token;
+//import nl.han.oose.entity.TokenOnlyForReturn;
 //
 //import javax.enterprise.inject.Alternative;
 //import java.text.ParseException;
@@ -17,7 +17,7 @@
 //public class LoginHandlerAlternativeImpl implements LoginHandler {
 //
 //    @Override
-//    public Token login(LoginCredentials credentials) throws LoginException {
+//    public TokenOnlyForReturn login(LoginCredentials credentials) throws LoginException {
 //
 //        Account account = new Account(credentials.getUser(), credentials.getPassword());
 //        AccountDAO dao = new AccountDAO();
@@ -25,20 +25,20 @@
 //        for (Account accountIndex : accountsList) {
 //            if (accountIndex.getUser().equals(account.getUser()) && accountIndex.getPassword().equals(account.getPassword())) {
 //                TokenDAO tdao = new TokenDAO();
-//                List<Token> tokenList = tdao.getAllTokens();
+//                List<TokenOnlyForReturn> tokenList = tdao.getAllTokens();
 //                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
 //                Date date = new Date();
 //                int length = 14;
 //                String dateString = sdf.format(date);
 //
-//                for (Token tokenIndex : tokenList) {
+//                for (TokenOnlyForReturn tokenIndex : tokenList) {
 //                    if (tokenIndex.getuser().equals(accountIndex.getUser())) {
 //                        String databaseDateString = tokenIndex.getDateString();
 //                        try {
 //                            Date databaseDate = sdf.parse(databaseDateString);
 //                            if (date.after(databaseDate)) {
 //                                tdao.deleteToken(tokenIndex);
-//                                Token token = new Token(accountIndex.getUser(), this.getToken(length), dateString);
+//                                TokenOnlyForReturn token = new TokenOnlyForReturn(accountIndex.getUser(), this.getToken(length), dateString);
 //                                tdao.persistToken(token);
 //                                return token;
 //                            } else {
@@ -49,7 +49,7 @@
 //                        }
 //                    }
 //                }
-//                Token token = new Token(accountIndex.getUser(), this.getToken(length),dateString);
+//                TokenOnlyForReturn token = new TokenOnlyForReturn(accountIndex.getUser(), this.getToken(length),dateString);
 //                tdao.persistToken(token);
 //                return token;
 //            }

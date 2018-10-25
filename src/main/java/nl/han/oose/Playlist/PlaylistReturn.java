@@ -5,9 +5,9 @@ import java.util.List;
 public class PlaylistReturn {
 
     private List<Playlist> playlists;
-    private int length = 5000;
+    private int length;
 
-    public PlaylistReturn(List<Playlist> playlists) {
+    public PlaylistReturn(List<Playlist> playlists, int length) {
         this.playlists = playlists;
     }
 

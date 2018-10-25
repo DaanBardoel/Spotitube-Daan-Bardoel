@@ -1,11 +1,11 @@
 package nl.han.oose.Login;
 
-public class Token {
+public class TokenOnlyForReturn {
 
     private String token;
-    private int user;
+    private String user;
 
-    public Token(String token, int user) {
+    public TokenOnlyForReturn(String token, String user) {
         this.token = token;
         this.user = user;
     }
@@ -18,11 +18,11 @@ public class Token {
         this.token = token;
     }
 
-    public int getuser() {
+    public String getuser() {
         return user;
     }
 
-    public void setuser(int user) {
+    public void setuser(String user) {
         this.user = user;
     }
 }

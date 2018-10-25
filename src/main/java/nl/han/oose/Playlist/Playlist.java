@@ -7,6 +7,9 @@ public class Playlist {
     private boolean owner;
     private String[] tracks;
 
+    public Playlist() {
+    }
+
     public Playlist(int id, String name, boolean owner, String[] tracks) {
         this.id = id;
         this.name = name;
