@@ -120,4 +120,24 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
             throw new PlaylistException("The token does not exist. Please log in!");
         }
     }
+
+    @Override
+    public List<TracksDB> getAllTracksForThisPlaylist(String tokenString, int id) {
+
+        List<PlaylistTrackDB> playlistTracks = playlistTracksDAO.getAllPlaylistTracks();
+        List<TracksDB> tracks = tracksDAO.getAllTracks();
+        List<TracksDB> tracksResult = new ArrayList<>();
+
+        for (PlaylistTrackDB playlistTracksIndex : playlistTracks) {
+            if (playlistTracksIndex.getPlaylistID() == id) {
+                for (TracksDB tracksIndex : tracks) {
+                    if (tracksIndex.getNumberID() == playlistTracksIndex.getTrackID()) {
+                        tracksResult.add(tracksIndex);
+                    }
+                }
+            }
+        }
+
+        return tracksResult;
+    }
 }

@@ -25,6 +25,17 @@ public class PlaylistController {
         }
     }
 
+    @GET
+    @Path("/{id}/tracks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTracksForPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID) {
+        try {
+            return Response.status(Response.Status.OK).entity(handler.getAllTracksForThisPlaylist(token, playlistID)).build();
+        } catch (PlaylistException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        }
+    }
+
     @DELETE()
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

@@ -1,5 +1,6 @@
 package nl.han.oose.Playlist;
 
+import nl.han.oose.entity.TracksDB;
 import nl.han.oose.token.Token;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PlaylistHandler {
     List<Playlist> deletePlaylistAndReturnAllPlaylists(String tokenString, int id);
 
     List<Playlist> editPlaylistAndReturnAllPlaylists(String tokenString, int id, Playlist playlist);
+
+    List<TracksDB> getAllTracksForThisPlaylist(String tokenString, int id);
 }
