@@ -1,7 +1,7 @@
 package nl.han.oose.Playlist;
 
 
-import nl.han.oose.entity.TrackDB;
+import nl.han.oose.entity.Track;
 import nl.han.oose.tracks.TrackReturn;
 
 import javax.inject.Inject;
@@ -34,6 +34,7 @@ public class PlaylistController {
     public Response getTracksForPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID) {
 
         TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, playlistID));
+
         try {
             return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
@@ -41,14 +42,15 @@ public class PlaylistController {
         }
     }
 
-    @POST
     @Path("/{id}/tracks")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response InsertTrackIntoPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID, TrackDB track) {
+    public Response insertTrackIntoPlaylist(@PathParam("id") int id, @QueryParam("token") String token, Track track) {
 
-        TrackReturn trackReturn = new TrackReturn(handler.addTracksToGivenPlaylist(token, playlistID, track));
         try {
+            handler.addTracksToGivenPlaylist(token, id, track);
+            TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, id));
             return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();

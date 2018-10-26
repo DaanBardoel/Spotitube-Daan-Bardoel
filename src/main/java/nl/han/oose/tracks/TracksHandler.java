@@ -1,9 +1,9 @@
 package nl.han.oose.tracks;
 
-import nl.han.oose.entity.TrackDB;
+import nl.han.oose.entity.Track;
 
 import java.util.List;
 
 public interface TracksHandler {
-    List<TrackDB> getAllTracksExceptFromCurrentPlaylist(int playlistID, String token);
+    List<Track> getAllTracksExceptFromCurrentPlaylist(int playlistID, String token);
 }

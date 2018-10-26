@@ -1,6 +1,6 @@
 package nl.han.oose.entity;
 
-public class TrackDB {
+public class Track {
 
     private int id;
     private String title;
@@ -12,10 +12,10 @@ public class TrackDB {
     private String description;
     private boolean offlineAvailable;
 
-    public TrackDB() {
+    public Track() {
     }
 
-    public TrackDB(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable) {
+    public Track(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable) {
         this.id = id;
         this.title = title;
         this.performer = performer;
@@ -27,7 +27,7 @@ public class TrackDB {
         this.offlineAvailable = offlineAvailable;
     }
 
-    public int getNumberID() {
+    public int getId() {
         return id;
     }
 
