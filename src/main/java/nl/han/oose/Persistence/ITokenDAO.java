@@ -10,4 +10,6 @@ public interface ITokenDAO {
     void persistToken(TokenDB tokenDB);
 
     void deleteToken(TokenDB tokenDB);
+
+    TokenDB getTokenForUserId(int userID);
 }

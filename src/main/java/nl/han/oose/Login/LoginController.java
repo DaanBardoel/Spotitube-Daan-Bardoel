@@ -22,7 +22,7 @@ public class LoginController {
     public Response loginResponse(LoginCredentials creds) {
         //try catch block
         try {
-            return Response.status(Response.Status.OK).entity(loginHandler.login(creds)).build();
+            return Response.status(Response.Status.OK).entity(loginHandler.loginNewVersion(creds)).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }

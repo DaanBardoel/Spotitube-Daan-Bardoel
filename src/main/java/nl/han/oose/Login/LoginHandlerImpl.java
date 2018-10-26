@@ -1,55 +1,56 @@
 package nl.han.oose.Login;
 
-import nl.han.oose.Persistence.AccountDAO;
 import nl.han.oose.Persistence.IAccountDAO;
 import nl.han.oose.Persistence.ITokenDAO;
-import nl.han.oose.Persistence.TokenDAO;
 import nl.han.oose.entity.AccountDB;
 import nl.han.oose.entity.TokenDB;
 
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 @Default
 public class LoginHandlerImpl implements LoginHandler {
 
+    @Inject
+    IAccountDAO accountDAO;
+
+    @Inject
+    ITokenDAO tokenDAO;
+
     @Override
-    public TokenOnlyForReturn login(LoginCredentials credentials) throws LoginException {
-        IAccountDAO dao = new AccountDAO();
-        List<AccountDB> accountsList = dao.getAllAccounts();
-        for (AccountDB accountDBIndex : accountsList) {
-            if (accountDBIndex.getUser().equals(credentials.getUser()) && accountDBIndex.getPassword().equals(credentials.getPassword())) {
-                ITokenDAO tdao = new TokenDAO();
-                List<TokenDB> tokenDBList = tdao.getAllTokens();
-                for (TokenDB tokenDBIndex : tokenDBList) {
-                    if (tokenDBIndex.getuser() == accountDBIndex.getUserId()) {
-                        String databaseDateString = tokenDBIndex.getDateString();
-                        Date date = new Date();
-                        if (date.after(this.getDatabaseDate(databaseDateString))) {
-                            tdao.deleteToken(tokenDBIndex);
-                            TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
-                            tdao.persistToken(tokenDB);
-                            return new TokenOnlyForReturn(tokenDB.getToken(), accountDBIndex.getUser());
-                        } else {
-                            return new TokenOnlyForReturn(tokenDBIndex.getToken(), accountDBIndex.getUser());
-                        }
-                    }
-                }
-                TokenDB tokenDB = new TokenDB(this.getToken(), accountDBIndex.getUserId(), this.getInsertIntoDatabaseString());
-                tdao.persistToken(tokenDB);
-                return new TokenOnlyForReturn(tokenDB.getToken(), accountDBIndex.getUser());
-            }
+    public TokenOnlyForReturn loginNewVersion(LoginCredentials credentials) throws LoginException {
+        AccountDB account = accountDAO.getAccountForGivenCredentials(credentials);
+        if (account == null) {
+            throw new LoginException("gegevens niet correct!");
+        } else {
+            TokenDB tokenDB = tokenDAO.getTokenForUserId(account.getUserId());
+            return this.getTokenOnlyForReturn(tokenDB, account);
         }
-        throw new LoginException("credentials not correct!");
     }
 
-    private String getToken() {
+    private TokenOnlyForReturn getTokenOnlyForReturn(TokenDB tokenDB, AccountDB account) {
+        if (tokenDB == null) {
+            tokenDAO.persistToken(new TokenDB(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString()));
+            return new TokenOnlyForReturn(this.getTokenString(), account.getUser());
+        } else {
+            Date date = new Date();
+            if (date.after(this.getDatabaseDate(tokenDB.getDateString()))) {
+                tokenDAO.deleteToken(tokenDB);
+                TokenDB tokenIntoDatabase = new TokenDB(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString());
+                return new TokenOnlyForReturn(tokenIntoDatabase.getToken(), account.getUser());
+            } else {
+                return new TokenOnlyForReturn(tokenDB.getToken(), account.getUser());
+            }
+        }
+    }
+
+    private String getTokenString() {
         int length = 14;
         StringBuilder token = new StringBuilder(length);
         Random random = new Random();
@@ -73,7 +74,7 @@ public class LoginHandlerImpl implements LoginHandler {
         try {
             return sdf.parse(databaseDateString);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Unable to parse date from database. Incorrect date for this token.");
         }
     }
 }

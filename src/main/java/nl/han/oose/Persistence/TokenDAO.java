@@ -68,4 +68,33 @@ public class TokenDAO implements ITokenDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public TokenDB getTokenForUserId(int userID) {
+
+        TokenDB token = null;
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT * FROM Token WHERE userID = (?)");
+        ) {
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+
+            boolean val = resultSet.next();
+
+            if (!val) {
+                return null;
+            } else {
+                int userIDfromDB = resultSet.getInt("userID");
+                String tokenString = resultSet.getString("token");
+                String dateString = resultSet.getString("validUntil");
+                return new TokenDB(tokenString, userIDfromDB, dateString);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

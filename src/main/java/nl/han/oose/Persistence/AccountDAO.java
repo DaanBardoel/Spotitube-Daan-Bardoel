@@ -1,5 +1,6 @@
 package nl.han.oose.Persistence;
 
+import nl.han.oose.Login.LoginCredentials;
 import nl.han.oose.entity.AccountDB;
 
 import java.sql.Connection;
@@ -35,5 +36,32 @@ public class AccountDAO implements IAccountDAO {
             throw new RuntimeException(e);
         }
         return accountDBS;
+    }
+
+    @Override
+    public AccountDB getAccountForGivenCredentials(LoginCredentials credentials) {
+        AccountDB account;
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM Account WHERE [user] = (?) AND password = (?)");
+        ) {
+            statement.setString(1, credentials.getUser());
+            statement.setString(2, credentials.getPassword());
+            ResultSet resultSet = statement.executeQuery();
+
+            boolean val = resultSet.next();
+
+            if (!val) {
+                return null;
+            } else {
+                int userID = resultSet.getInt("userID");
+                String user = resultSet.getString("user");
+                String password = resultSet.getString("password");
+                account = new AccountDB(userID, user, password);
+            }
+            return account;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

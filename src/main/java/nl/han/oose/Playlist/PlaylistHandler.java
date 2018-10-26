@@ -1,15 +1,12 @@
 package nl.han.oose.Playlist;
 
 import nl.han.oose.entity.Track;
-import nl.han.oose.token.Token;
 
 import java.util.List;
 
 public interface PlaylistHandler {
 
     List<Playlist> getPlayListStorage(String tokenString) throws PlaylistException;
-
-    Token doesTokenExistInList(String tokenstring);
 
     int returnTotalLength();
 

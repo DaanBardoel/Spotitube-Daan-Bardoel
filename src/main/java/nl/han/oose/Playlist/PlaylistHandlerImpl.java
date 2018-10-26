@@ -37,16 +37,7 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
         }
     }
 
-    @Override
-    public Token doesTokenExistInList(String tokenstring) {
-        List<TokenDB> tokenDBs = tokenDAO.getAllTokens();
-        for (TokenDB tokenDB : tokenDBs) {
-            if (tokenDB.getToken().equals(tokenstring)) {
-                return new Token(tokenDB.getToken(), tokenDB.getuser());
-            }
-        }
-        return null;
-    }
+
 
     private List<Playlist> addDBPlaylistToPlaylistList(Token token) {
         List<Playlist> playlists = new ArrayList<>();
@@ -152,5 +143,15 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
         } else {
             throw new PlaylistException("The token does not exist. Please log in!");
         }
+    }
+
+    private Token doesTokenExistInList(String tokenstring) {
+        List<TokenDB> tokenDBs = tokenDAO.getAllTokens();
+        for (TokenDB tokenDB : tokenDBs) {
+            if (tokenDB.getToken().equals(tokenstring)) {
+                return new Token(tokenDB.getToken(), tokenDB.getuser());
+            }
+        }
+        return null;
     }
 }
