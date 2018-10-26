@@ -57,6 +57,20 @@ public class PlaylistController {
         }
     }
 
+    @Path("/{playlistid}/tracks/{trackid}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteNumberFromPlaylist(@PathParam("playlistid") int playlistID, @PathParam("trackid") int trackID, @QueryParam("token") String token) {
+
+        try {
+            handler.deleteGivenTrackFromPlaylist(token, playlistID, trackID);
+            TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, playlistID));
+            return Response.status(Response.Status.OK).entity(trackReturn).build();
+        } catch (PlaylistException e) {
+            return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
+        }
+    }
+
     @DELETE()
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

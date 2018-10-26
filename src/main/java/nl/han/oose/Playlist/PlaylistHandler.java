@@ -22,4 +22,6 @@ public interface PlaylistHandler {
     List<Track> getAllTracksForThisPlaylist(String tokenString, int id);
 
     void addTracksToGivenPlaylist(String tokenString, int id, Track track);
+
+    void deleteGivenTrackFromPlaylist(String tokenString, int playlistID, int trackID);
 }

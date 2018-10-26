@@ -1,11 +1,13 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.Track;
+import nl.han.oose.entity.TrackDB;
 
 import java.util.List;
 
 public interface ITrackDAO {
-    List<Track> getAllTracks();
+    List<TrackDB> getAllTracks();
 
-    List<Track> getAllTracksExceptInPlaylistTracks(int playlistID);
+    List<TrackDB> getAllTracksExceptInPlaylistTracks(int playlistID);
+
+    List<TrackDB> getAllTracksForThisPlaylist(int playlistID);
 }

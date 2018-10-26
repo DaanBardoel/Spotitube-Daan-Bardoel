@@ -4,10 +4,7 @@ import nl.han.oose.Persistence.IPlaylistDAO;
 import nl.han.oose.Persistence.IPlaylistTrackDAO;
 import nl.han.oose.Persistence.ITokenDAO;
 import nl.han.oose.Persistence.ITrackDAO;
-import nl.han.oose.entity.PlaylistDB;
-import nl.han.oose.entity.PlaylistTrackDB;
-import nl.han.oose.entity.TokenDB;
-import nl.han.oose.entity.Track;
+import nl.han.oose.entity.*;
 import nl.han.oose.token.Token;
 
 import javax.enterprise.inject.Default;
@@ -67,10 +64,10 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
     @Override
     public int returnTotalLength() {
         List<PlaylistTrackDB> playlistTrackDBs = playlistTracksDAO.getAllPlaylistTracks();
-        List<Track> tracksDB = tracksDAO.getAllTracks();
+        List<TrackDB> tracksDB = tracksDAO.getAllTracks();
         int duration = 0;
         for (PlaylistTrackDB playlistTrackDBsIndex : playlistTrackDBs) {
-            for (Track tracksDBIndex : tracksDB) {
+            for (TrackDB tracksDBIndex : tracksDB) {
                 if (tracksDBIndex.getId() == playlistTrackDBsIndex.getTrackID()) {
                     duration += tracksDBIndex.getDuration();
                     break;
@@ -124,16 +121,14 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
     @Override
     public List<Track> getAllTracksForThisPlaylist(String tokenString, int id) {
 
-        List<PlaylistTrackDB> playlistTracks = playlistTracksDAO.getAllPlaylistTracks();
-        List<Track> tracks = tracksDAO.getAllTracks();
+        List<PlaylistTrackDB> playlistTracks = playlistTracksDAO.getAllPlaylistTracksForThisPlaylist(id);
+        List<TrackDB> tracks = tracksDAO.getAllTracksForThisPlaylist(id);
         List<Track> tracksResult = new ArrayList<>();
 
         for (PlaylistTrackDB playlistTracksIndex : playlistTracks) {
-            if (playlistTracksIndex.getPlaylistID() == id) {
-                for (Track tracksIndex : tracks) {
-                    if (tracksIndex.getId() == playlistTracksIndex.getTrackID()) {
-                        tracksResult.add(tracksIndex);
-                    }
+            for (TrackDB tracksIndex : tracks) {
+                if (playlistTracksIndex.getTrackID() == tracksIndex.getId()) {
+                    tracksResult.add(new Track(tracksIndex.getId(), tracksIndex.getTitle(), tracksIndex.getPerformer(), tracksIndex.getDuration(), tracksIndex.getAlbum(), tracksIndex.getPlaycount(), tracksIndex.getPublicationDate(), tracksIndex.getDescription(), playlistTracksIndex.isOfflineAvailability()));
                 }
             }
         }
@@ -143,6 +138,19 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
 
     @Override
     public void addTracksToGivenPlaylist(String tokenString, int id, Track track) {
-        playlistTracksDAO.insertTrackIntoPlaylistTrack(id, track.getId());
+        if (this.doesTokenExistInList(tokenString) != null) {
+            playlistTracksDAO.insertTrackIntoPlaylistTrack(id, track);
+        } else {
+            throw new PlaylistException("The token does not exist. Please log in!");
+        }
+    }
+
+    @Override
+    public void deleteGivenTrackFromPlaylist(String tokenString, int playlistID, int trackID) {
+        if (this.doesTokenExistInList(tokenString) != null) {
+            playlistTracksDAO.deleteRecordFromPlaylist(playlistID, trackID);
+        } else {
+            throw new PlaylistException("The token does not exist. Please log in!");
+        }
     }
 }

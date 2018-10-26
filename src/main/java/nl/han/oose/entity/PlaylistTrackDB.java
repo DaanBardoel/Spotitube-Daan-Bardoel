@@ -4,10 +4,12 @@ public class PlaylistTrackDB {
 
     private int playlistID;
     private int trackID;
+    private boolean offlineAvailability;
 
-    public PlaylistTrackDB(int playlistID, int trackID) {
+    public PlaylistTrackDB(int playlistID, int trackID, boolean offlineAvailability) {
         this.playlistID = playlistID;
         this.trackID = trackID;
+        this.offlineAvailability = offlineAvailability;
     }
 
     public int getPlaylistID() {
@@ -24,5 +26,13 @@ public class PlaylistTrackDB {
 
     public void setTrackID(int trackID) {
         this.trackID = trackID;
+    }
+
+    public boolean isOfflineAvailability() {
+        return offlineAvailability;
+    }
+
+    public void setOfflineAvailability(boolean offlineAvailability) {
+        this.offlineAvailability = offlineAvailability;
     }
 }
