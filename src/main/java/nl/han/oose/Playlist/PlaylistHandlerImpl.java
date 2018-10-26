@@ -145,7 +145,8 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
         }
     }
 
-    private Token doesTokenExistInList(String tokenstring) {
+    @Override
+    public Token doesTokenExistInList(String tokenstring) {
         List<TokenDB> tokenDBs = tokenDAO.getAllTokens();
         for (TokenDB tokenDB : tokenDBs) {
             if (tokenDB.getToken().equals(tokenstring)) {

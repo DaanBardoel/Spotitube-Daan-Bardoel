@@ -1,6 +1,7 @@
 package nl.han.oose.Playlist;
 
 import nl.han.oose.entity.Track;
+import nl.han.oose.token.Token;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface PlaylistHandler {
     void addTracksToGivenPlaylist(String tokenString, int id, Track track);
 
     void deleteGivenTrackFromPlaylist(String tokenString, int playlistID, int trackID);
+
+    Token doesTokenExistInList(String tokenstring);
 }
