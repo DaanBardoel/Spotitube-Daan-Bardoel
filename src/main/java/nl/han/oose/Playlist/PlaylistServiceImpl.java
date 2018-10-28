@@ -4,7 +4,9 @@ import nl.han.oose.Persistence.IPlaylistDAO;
 import nl.han.oose.Persistence.IPlaylistTrackDAO;
 import nl.han.oose.Persistence.ITokenDAO;
 import nl.han.oose.Persistence.ITrackDAO;
-import nl.han.oose.entity.*;
+import nl.han.oose.entity.PlaylistDB;
+import nl.han.oose.entity.TokenDB;
+import nl.han.oose.entity.Track;
 import nl.han.oose.token.Token;
 
 import javax.enterprise.inject.Default;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Default
-public class PlaylistHandlerImpl implements PlaylistHandler {
+public class PlaylistServiceImpl implements PlaylistService {
 
     @Inject
     IPlaylistDAO playlistDAO;
@@ -38,7 +40,7 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
     }
 
 
-
+    // TODO: 28/10/2018 Make this method unnecesary by letting getAllPlaylists return just a playlist
     private List<Playlist> addDBPlaylistToPlaylistList(Token token) {
         List<Playlist> playlists = new ArrayList<>();
         List<PlaylistDB> playlistDBs = playlistDAO.getAllPlaylists();
@@ -54,18 +56,7 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
 
     @Override
     public int returnTotalLength() {
-        List<PlaylistTrackDB> playlistTrackDBs = playlistTracksDAO.getAllPlaylistTracks();
-        List<TrackDB> tracksDB = tracksDAO.getAllTracks();
-        int duration = 0;
-        for (PlaylistTrackDB playlistTrackDBsIndex : playlistTrackDBs) {
-            for (TrackDB tracksDBIndex : tracksDB) {
-                if (tracksDBIndex.getId() == playlistTrackDBsIndex.getTrackID()) {
-                    duration += tracksDBIndex.getDuration();
-                    break;
-                }
-            }
-        }
-        return duration;
+        return tracksDAO.getTotalDuration();
     }
 
     @Override
@@ -111,20 +102,7 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
 
     @Override
     public List<Track> getAllTracksForThisPlaylist(String tokenString, int id) {
-
-        List<PlaylistTrackDB> playlistTracks = playlistTracksDAO.getAllPlaylistTracksForThisPlaylist(id);
-        List<TrackDB> tracks = tracksDAO.getAllTracksForThisPlaylist(id);
-        List<Track> tracksResult = new ArrayList<>();
-
-        for (PlaylistTrackDB playlistTracksIndex : playlistTracks) {
-            for (TrackDB tracksIndex : tracks) {
-                if (playlistTracksIndex.getTrackID() == tracksIndex.getId()) {
-                    tracksResult.add(new Track(tracksIndex.getId(), tracksIndex.getTitle(), tracksIndex.getPerformer(), tracksIndex.getDuration(), tracksIndex.getAlbum(), tracksIndex.getPlaycount(), tracksIndex.getPublicationDate(), tracksIndex.getDescription(), playlistTracksIndex.isOfflineAvailability()));
-                }
-            }
-        }
-
-        return tracksResult;
+        return tracksDAO.getAllTracksForThisPlaylist(id);
     }
 
     @Override
@@ -147,12 +125,12 @@ public class PlaylistHandlerImpl implements PlaylistHandler {
 
     @Override
     public Token doesTokenExistInList(String tokenstring) {
-        List<TokenDB> tokenDBs = tokenDAO.getAllTokens();
-        for (TokenDB tokenDB : tokenDBs) {
-            if (tokenDB.getToken().equals(tokenstring)) {
-                return new Token(tokenDB.getToken(), tokenDB.getuser());
-            }
+        TokenDB tokenDB = tokenDAO.getTokenForGivenTokenString(tokenstring);
+
+        if (tokenDB == null) {
+            return null;
+        } else {
+            return new Token(tokenDB.getToken(), tokenDB.getuser());
         }
-        return null;
     }
 }

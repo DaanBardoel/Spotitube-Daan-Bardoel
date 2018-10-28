@@ -72,8 +72,6 @@ public class TokenDAO implements ITokenDAO {
     @Override
     public TokenDB getTokenForUserId(int userID) {
 
-        TokenDB token = null;
-
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
@@ -84,17 +82,40 @@ public class TokenDAO implements ITokenDAO {
 
             boolean val = resultSet.next();
 
-            if (!val) {
-                return null;
-            } else {
-                int userIDfromDB = resultSet.getInt("userID");
-                String tokenString = resultSet.getString("token");
-                String dateString = resultSet.getString("validUntil");
-                return new TokenDB(tokenString, userIDfromDB, dateString);
-
-            }
+            return getTokenDB(resultSet, val);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public TokenDB getTokenForGivenTokenString(String tokenString) {
+
+        try (
+                Connection connection = connectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT * FROM Token WHERE token = (?)");
+        ) {
+            statement.setString(1, tokenString);
+            ResultSet resultSet = statement.executeQuery();
+
+            boolean val = resultSet.next();
+
+            return getTokenDB(resultSet, val);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private TokenDB getTokenDB(ResultSet resultSet, boolean val) throws SQLException {
+        if (!val) {
+            return null;
+        } else {
+            int userIDfromDB = resultSet.getInt("userID");
+            String tokenString = resultSet.getString("token");
+            String dateString = resultSet.getString("validUntil");
+            return new TokenDB(tokenString, userIDfromDB, dateString);
+
         }
     }
 }

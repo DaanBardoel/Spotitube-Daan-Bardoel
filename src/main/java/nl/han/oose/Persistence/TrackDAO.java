@@ -1,6 +1,6 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.TrackDB;
+import nl.han.oose.entity.Track;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,27 +18,31 @@ public class TrackDAO implements ITrackDAO {
     }
 
     @Override
-    public List<TrackDB> getAllTracks() {
-        List<TrackDB> tracks;
+    public int getTotalDuration() {
+        int durationToReturn = 0;
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tracks");
+                PreparedStatement statement = connection.prepareStatement("SELECT t.duration\n" +
+                        "FROM Tracks t INNER JOIN Playlistcontent pc ON t.numberID = pc.trackID"
+                );
         ) {
             ResultSet resultSet = statement.executeQuery();
-            tracks = resultsetMethod(resultSet);
-
+            while (resultSet.next()) {
+                int durationFromDatabase = resultSet.getInt("duration");
+                durationToReturn += durationFromDatabase;
+            }
+            return durationToReturn;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return tracks;
     }
 
     @Override
-    public List<TrackDB> getAllTracksExceptInPlaylistTracks(int playlistID) {
-        List<TrackDB> tracks;
+    public List<Track> getAllTracksExceptInCurrentPlaylist(int playlistID) {
+        List<Track> tracks;
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tracks WHERE numberID NOT IN (SELECT trackID FROM Playlistcontent WHERE playlistID = (?))");
+                PreparedStatement statement = connection.prepareStatement("SELECT numberID, title, performer, duration, album, playcount, publicationDate, description, CAST(0 AS bit) AS offlineAvailability FROM Tracks WHERE numberID NOT IN (SELECT trackID FROM Playlistcontent WHERE playlistID = (?))");
         ) {
             statement.setInt(1, playlistID);
             ResultSet resultSet = statement.executeQuery();
@@ -51,11 +55,13 @@ public class TrackDAO implements ITrackDAO {
     }
 
     @Override
-    public List<TrackDB> getAllTracksForThisPlaylist(int playlistID) {
-        List<TrackDB> tracks;
+    public List<Track> getAllTracksForThisPlaylist(int playlistID) {
+        List<Track> tracks;
         try (
                 Connection connection = connectionFactory.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT * FROM Tracks WHERE numberID IN (SELECT trackID FROM Playlistcontent WHERE playlistID = (?))");
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT t.numberID, t.title, t.performer, t.duration, t.album, t.playcount, t.publicationDate, t.description, pc.offlineAvailability FROM Tracks t INNER JOIN Playlistcontent pc ON T.numberID = pc.trackID WHERE pc.playlistID = (?)"
+                );
         ) {
             statement.setInt(1, playlistID);
             ResultSet resultSet = statement.executeQuery();
@@ -67,9 +73,9 @@ public class TrackDAO implements ITrackDAO {
         return tracks;
     }
 
-    private List<TrackDB> resultsetMethod(ResultSet resultSet) throws SQLException {
+    private List<Track> resultsetMethod(ResultSet resultSet) throws SQLException {
 
-        List<TrackDB> tracks = new ArrayList<>();
+        List<Track> tracks = new ArrayList<>();
 
         while (resultSet.next()) {
             int id = resultSet.getInt("numberID");
@@ -80,7 +86,8 @@ public class TrackDAO implements ITrackDAO {
             int playcount = resultSet.getInt("playcount");
             String publicationDate = resultSet.getString("publicationDate");
             String description = resultSet.getString("description");
-            tracks.add(new TrackDB(id, title, performer, duration, albumName, playcount, publicationDate, description));
+            boolean offlineAvailability = resultSet.getBoolean("offlineAvailability");
+            tracks.add(new Track(id, title, performer, duration, albumName, playcount, publicationDate, description, offlineAvailability));
         }
         return tracks;
     }

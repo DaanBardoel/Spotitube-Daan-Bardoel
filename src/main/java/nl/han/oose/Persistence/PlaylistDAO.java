@@ -61,14 +61,9 @@ public class PlaylistDAO implements IPlaylistDAO {
                 PreparedStatement statement = connection.prepareStatement(
                         "DELETE FROM Playlists WHERE playlistID = (?)"
                 );
-//                PreparedStatement statement1 = connection.prepareStatement(
-//                        "DELETE FROM Playlistcontent WHERE playlistID = (?)"
-//                );
         ) {
             statement.setInt(1, id);
             statement.execute();
-//            statement1.setInt(1, id);
-//            statement1.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

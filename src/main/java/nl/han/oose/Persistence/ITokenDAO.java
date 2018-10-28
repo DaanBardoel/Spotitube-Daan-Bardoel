@@ -12,4 +12,6 @@ public interface ITokenDAO {
     void deleteToken(TokenDB tokenDB);
 
     TokenDB getTokenForUserId(int userID);
+
+    TokenDB getTokenForGivenTokenString(String tokenString);
 }

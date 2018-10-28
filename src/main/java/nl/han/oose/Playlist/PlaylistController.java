@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 public class PlaylistController {
 
     @Inject
-    private PlaylistHandler handler;
+    private PlaylistService handler;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

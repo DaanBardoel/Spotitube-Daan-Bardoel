@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 public class LoginController {
 
     @Inject
-    private LoginHandler loginHandler;
+    private LoginService loginService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -22,7 +22,7 @@ public class LoginController {
     public Response loginResponse(LoginCredentials creds) {
         //try catch block
         try {
-            return Response.status(Response.Status.OK).entity(loginHandler.loginNewVersion(creds)).build();
+            return Response.status(Response.Status.OK).entity(loginService.loginNewVersion(creds)).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }

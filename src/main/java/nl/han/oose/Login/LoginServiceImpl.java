@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.Random;
 
 @Default
-public class LoginHandlerImpl implements LoginHandler {
+public class LoginServiceImpl implements LoginService {
 
     @Inject
     IAccountDAO accountDAO;
@@ -29,12 +29,12 @@ public class LoginHandlerImpl implements LoginHandler {
         if (account == null) {
             throw new LoginException("gegevens niet correct!");
         } else {
-            TokenDB tokenDB = tokenDAO.getTokenForUserId(account.getUserId());
-            return this.getTokenOnlyForReturn(tokenDB, account);
+            return this.getTokenOnlyForReturn(account);
         }
     }
 
-    private TokenOnlyForReturn getTokenOnlyForReturn(TokenDB tokenDB, AccountDB account) {
+    private TokenOnlyForReturn getTokenOnlyForReturn(AccountDB account) {
+        TokenDB tokenDB = tokenDAO.getTokenForUserId(account.getUserId());
         if (tokenDB == null) {
             tokenDAO.persistToken(new TokenDB(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString()));
             return new TokenOnlyForReturn(this.getTokenString(), account.getUser());

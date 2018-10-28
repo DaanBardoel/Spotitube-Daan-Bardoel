@@ -5,7 +5,7 @@ import nl.han.oose.token.Token;
 
 import java.util.List;
 
-public interface PlaylistHandler {
+public interface PlaylistService {
 
     List<Playlist> getPlayListStorage(String tokenString) throws PlaylistException;
 

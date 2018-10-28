@@ -14,7 +14,7 @@
 //import java.util.Random;
 //
 //@Alternative
-//public class LoginHandlerAlternativeImpl implements LoginHandler {
+//public class LoginHandlerAlternativeImpl implements LoginService {
 //
 //    @Override
 //    public TokenOnlyForReturn login(LoginCredentials credentials) throws LoginException {

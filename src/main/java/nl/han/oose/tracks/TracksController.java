@@ -12,13 +12,13 @@ import javax.ws.rs.core.Response;
 public class TracksController {
 
     @Inject
-    TracksHandler tracksHandler;
+    TracksService tracksService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response tracksGetResponse(@QueryParam("forPlaylist") int playlistID, @QueryParam("token") String token) {
 
-        TrackReturn trackReturn = new TrackReturn(tracksHandler.getAllTracksExceptFromCurrentPlaylist(playlistID, token));
+        TrackReturn trackReturn = new TrackReturn(tracksService.getAllTracksExceptFromCurrentPlaylist(playlistID, token));
 
         try {
             return Response.status(Response.Status.OK).entity(trackReturn).build();
