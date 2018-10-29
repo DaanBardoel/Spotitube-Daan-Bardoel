@@ -1,4 +1,4 @@
-package nl.han.oose.Login;
+package nl.han.oose.exceptions;
 
 public class LoginException extends RuntimeException {
 

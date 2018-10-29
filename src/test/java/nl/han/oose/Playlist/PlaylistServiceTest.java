@@ -3,7 +3,10 @@ package nl.han.oose.Playlist;
 import nl.han.oose.Persistence.IPlaylistDAO;
 import nl.han.oose.Persistence.ITokenDAO;
 import nl.han.oose.Persistence.ITrackDAO;
-import nl.han.oose.entity.TokenDB;
+import nl.han.oose.entity.DTO.PlaylistDTO;
+import nl.han.oose.entity.Token;
+import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.service.PlaylistServiceImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -40,10 +43,10 @@ public class PlaylistServiceTest {
 
     @Test
     public void getPlayListStorageWithCorrectToken() {
-        List<Playlist> playlists = new ArrayList<>();
-        playlists.add(new Playlist(1, "nice rock", true, new String[]{}));
-        TokenDB token = new TokenDB("12345678912345", 1, "31.12.2018 23:59:59");
-        when(playlistDAO.getAllPlaylists(Mockito.any())).thenReturn(playlists);
+        List<PlaylistDTO> playlistDTOS = new ArrayList<>();
+        playlistDTOS.add(new PlaylistDTO(1, "nice rock", true, new String[]{}));
+        Token token = new Token("12345678912345", 1, "31.12.2018 23:59:59");
+        when(playlistDAO.getAllPlaylists(Mockito.any())).thenReturn(playlistDTOS);
         when(tokenDAO.getTokenForGivenTokenString(Mockito.any())).thenReturn(token);
         assertNotNull(sut.getPlayListStorage("12345678912345"));
     }

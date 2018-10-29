@@ -1,6 +1,6 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.Playlist.PlaylistException;
+import nl.han.oose.exceptions.PlaylistException;
 import nl.han.oose.entity.Track;
 
 import java.sql.Connection;

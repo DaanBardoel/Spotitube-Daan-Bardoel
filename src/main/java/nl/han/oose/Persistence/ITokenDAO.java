@@ -1,17 +1,17 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.entity.TokenDB;
+import nl.han.oose.entity.Token;
 
 import java.util.List;
 
 public interface ITokenDAO {
-    List<TokenDB> getAllTokens();
+    List<Token> getAllTokens();
 
-    void persistToken(TokenDB tokenDB);
+    void persistToken(Token token);
 
-    void deleteToken(TokenDB tokenDB);
+    void deleteToken(Token token);
 
-    TokenDB getTokenForUserId(int userID);
+    Token getTokenForUserId(int userID);
 
-    TokenDB getTokenForGivenTokenString(String tokenString);
+    Token getTokenForGivenTokenString(String tokenString);
 }

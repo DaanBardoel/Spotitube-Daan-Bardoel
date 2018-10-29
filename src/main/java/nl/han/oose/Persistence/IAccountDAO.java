@@ -1,12 +1,12 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.Login.LoginCredentials;
-import nl.han.oose.entity.AccountDB;
+import nl.han.oose.entity.DTO.AccountDTO;
+import nl.han.oose.entity.Account;
 
 import java.util.List;
 
 public interface IAccountDAO {
-    List<AccountDB> getAllAccounts();
+    List<Account> getAllAccounts();
 
-    AccountDB getAccountForGivenCredentials(LoginCredentials credentials);
+    Account getAccountForGivenCredentials(AccountDTO credentials);
 }

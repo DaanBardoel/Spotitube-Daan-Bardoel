@@ -1,9 +1,12 @@
-package nl.han.oose.Login;
+package nl.han.oose.service;
 
 import nl.han.oose.Persistence.IAccountDAO;
 import nl.han.oose.Persistence.ITokenDAO;
-import nl.han.oose.entity.AccountDB;
-import nl.han.oose.entity.TokenDB;
+import nl.han.oose.entity.Account;
+import nl.han.oose.entity.DTO.AccountDTO;
+import nl.han.oose.entity.DTO.TokenDTO;
+import nl.han.oose.entity.Token;
+import nl.han.oose.exceptions.LoginException;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -24,8 +27,8 @@ public class LoginServiceImpl implements LoginService {
     ITokenDAO tokenDAO;
 
     @Override
-    public TokenOnlyForReturn loginNewVersion(LoginCredentials credentials) throws LoginException {
-        AccountDB account = accountDAO.getAccountForGivenCredentials(credentials);
+    public TokenDTO loginNewVersion(AccountDTO credentials) throws LoginException {
+        Account account = accountDAO.getAccountForGivenCredentials(credentials);
         if (account == null) {
             throw new LoginException("Incorrect credentials!");
         } else {
@@ -33,19 +36,19 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 
-    private TokenOnlyForReturn getTokenOnlyForReturn(AccountDB account) {
-        TokenDB tokenDB = tokenDAO.getTokenForUserId(account.getUserId());
-        if (tokenDB == null) {
-            tokenDAO.persistToken(new TokenDB(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString()));
-            return new TokenOnlyForReturn(this.getTokenString(), account.getUser());
+    private TokenDTO getTokenOnlyForReturn(Account account) {
+        Token token = tokenDAO.getTokenForUserId(account.getUserId());
+        if (token == null) {
+            tokenDAO.persistToken(new Token(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString()));
+            return new TokenDTO(this.getTokenString(), account.getUser());
         } else {
             Date date = new Date();
-            if (date.after(this.getDatabaseDate(tokenDB.getDateString()))) {
-                tokenDAO.deleteToken(tokenDB);
-                TokenDB tokenIntoDatabase = new TokenDB(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString());
-                return new TokenOnlyForReturn(tokenIntoDatabase.getToken(), account.getUser());
+            if (date.after(this.getDatabaseDate(token.getDateString()))) {
+                tokenDAO.deleteToken(token);
+                Token tokenIntoDatabase = new Token(this.getTokenString(), account.getUserId(), this.getInsertIntoDatabaseString());
+                return new TokenDTO(tokenIntoDatabase.getToken(), account.getUser());
             } else {
-                return new TokenOnlyForReturn(tokenDB.getToken(), account.getUser());
+                return new TokenDTO(token.getToken(), account.getUser());
             }
         }
     }

@@ -1,7 +1,7 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.Login.LoginException;
-import nl.han.oose.entity.TokenDB;
+import nl.han.oose.exceptions.LoginException;
+import nl.han.oose.entity.Token;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +19,8 @@ public class TokenDAO implements ITokenDAO {
     }
 
     @Override
-    public List<TokenDB> getAllTokens() {
-        List<TokenDB> tokenDBs = new ArrayList<>();
+    public List<Token> getAllTokens() {
+        List<Token> tokens = new ArrayList<>();
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Token");
@@ -30,25 +30,25 @@ public class TokenDAO implements ITokenDAO {
                 int user = resultSet.getInt("userID");
                 String token = resultSet.getString("token");
                 String dateString = resultSet.getString("validUntil");
-                tokenDBs.add(new TokenDB(token, user, dateString));
+                tokens.add(new Token(token, user, dateString));
             }
         } catch (SQLException e) {
             throw new LoginException("Oops, something went wrong in the database.");
 
         }
-        return tokenDBs;
+        return tokens;
     }
 
     @Override
-    public void persistToken(TokenDB tokenDB) {
+    public void persistToken(Token token) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "INSERT  INTO Token (userID, token, validUntil) VALUES (?,?,?)");
         ) {
-            statement.setInt(1, tokenDB.getuser());
-            statement.setString(2, tokenDB.getToken());
-            statement.setString(3, tokenDB.getDateString());
+            statement.setInt(1, token.getUserID());
+            statement.setString(2, token.getToken());
+            statement.setString(3, token.getDateString());
             statement.execute();
 
         } catch (SQLException e) {
@@ -57,13 +57,13 @@ public class TokenDAO implements ITokenDAO {
     }
 
     @Override
-    public void deleteToken(TokenDB tokenDB) {
+    public void deleteToken(Token token) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "DELETE FROM Token WHERE userID = (?)");
         ) {
-            statement.setInt(1, tokenDB.getuser());
+            statement.setInt(1, token.getUserID());
             statement.execute();
         } catch (SQLException e) {
             throw new LoginException("Oops, something went wrong in the database.");
@@ -71,7 +71,7 @@ public class TokenDAO implements ITokenDAO {
     }
 
     @Override
-    public TokenDB getTokenForUserId(int userID) {
+    public Token getTokenForUserId(int userID) {
 
         try (
                 Connection connection = connectionFactory.getConnection();
@@ -90,7 +90,7 @@ public class TokenDAO implements ITokenDAO {
     }
 
     @Override
-    public TokenDB getTokenForGivenTokenString(String tokenString) {
+    public Token getTokenForGivenTokenString(String tokenString) {
 
         try (
                 Connection connection = connectionFactory.getConnection();
@@ -108,14 +108,14 @@ public class TokenDAO implements ITokenDAO {
         }
     }
 
-    private TokenDB getTokenDB(ResultSet resultSet, boolean val) throws SQLException {
+    private Token getTokenDB(ResultSet resultSet, boolean val) throws SQLException {
         if (!val) {
             return null;
         } else {
             int userIDfromDB = resultSet.getInt("userID");
             String tokenString = resultSet.getString("token");
             String dateString = resultSet.getString("validUntil");
-            return new TokenDB(tokenString, userIDfromDB, dateString);
+            return new Token(tokenString, userIDfromDB, dateString);
 
         }
     }

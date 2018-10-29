@@ -1,4 +1,4 @@
-package nl.han.oose.Playlist;
+package nl.han.oose.exceptions;
 
 public class PlaylistException extends RuntimeException {
 

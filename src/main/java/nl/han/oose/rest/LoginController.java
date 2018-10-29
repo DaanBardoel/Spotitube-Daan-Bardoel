@@ -1,4 +1,8 @@
-package nl.han.oose.Login;
+package nl.han.oose.rest;
+
+import nl.han.oose.entity.DTO.AccountDTO;
+import nl.han.oose.exceptions.LoginException;
+import nl.han.oose.service.LoginService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -17,7 +21,7 @@ public class LoginController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response loginResponse(LoginCredentials creds) {
+    public Response loginResponse(AccountDTO creds) {
         //try catch block
         try {
             return Response.status(Response.Status.OK).entity(loginService.loginNewVersion(creds)).build();

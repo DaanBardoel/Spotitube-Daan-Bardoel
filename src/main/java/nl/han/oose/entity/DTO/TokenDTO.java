@@ -1,11 +1,11 @@
-package nl.han.oose.Login;
+package nl.han.oose.entity.DTO;
 
-public class TokenOnlyForReturn {
+public class TokenDTO {
 
     private String token;
     private String user;
 
-    public TokenOnlyForReturn(String token, String user) {
+    public TokenDTO(String token, String user) {
         this.token = token;
         this.user = user;
     }

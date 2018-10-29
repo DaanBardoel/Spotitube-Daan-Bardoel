@@ -1,5 +1,10 @@
 package nl.han.oose.Playlist;
 
+import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
+import nl.han.oose.entity.DTO.PlaylistDTO;
+import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.rest.PlaylistController;
+import nl.han.oose.service.PlaylistService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -25,22 +30,22 @@ public class PlaylistControllerTest {
 
     @Test
     public void playListsGetResponseWhenGivenTokenIsCorrect() {
-        List<Playlist> playlists = new ArrayList<>();
-        playlists.add(new Playlist(1, "nice rock", true, new String[]{}));
+        List<PlaylistDTO> playlistDTOS = new ArrayList<>();
+        playlistDTOS.add(new PlaylistDTO(1, "nice rock", true, new String[]{}));
 
-        PlaylistReturn playlistReturn = new PlaylistReturn(playlists, 5000);
+        PlaylistWithLengthDTO playlistWithLengthDTO = new PlaylistWithLengthDTO(playlistDTOS, 5000);
 
-        Mockito.when(service.getPlayListStorage(Mockito.any())).thenReturn(playlists);
+        Mockito.when(service.getPlayListStorage(Mockito.any())).thenReturn(playlistDTOS);
         Mockito.when(service.returnTotalLength()).thenReturn(5000);
         Response response = sut.playListsGetResponse(Mockito.any());
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
 
-        PlaylistReturn resultPlaylistReturn = (PlaylistReturn) response.getEntity();
+        PlaylistWithLengthDTO resultPlaylistWithLengthDTO = (PlaylistWithLengthDTO) response.getEntity();
 
-        assertEquals(playlistReturn.getPlaylists(), resultPlaylistReturn.getPlaylists());
+        assertEquals(playlistWithLengthDTO.getPlaylistDTOS(), resultPlaylistWithLengthDTO.getPlaylistDTOS());
 
-        assertEquals(playlistReturn.getLength(), resultPlaylistReturn.getLength());
+        assertEquals(playlistWithLengthDTO.getLength(), resultPlaylistWithLengthDTO.getLength());
     }
 
     @Test

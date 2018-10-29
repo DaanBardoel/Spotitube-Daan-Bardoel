@@ -1,15 +1,15 @@
-package nl.han.oose.tracks;
+package nl.han.oose.entity.DTO;
 
 import nl.han.oose.entity.Track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackReturn {
+public class TrackDTO {
 
     private List<Track> tracks = new ArrayList<>();
 
-    public TrackReturn(List<Track> tracks) {
+    public TrackDTO(List<Track> tracks) {
         this.tracks = tracks;
     }
 

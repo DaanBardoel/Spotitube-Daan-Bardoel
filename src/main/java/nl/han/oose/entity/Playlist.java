@@ -1,12 +1,12 @@
 package nl.han.oose.entity;
 
-public class PlaylistDB {
+public class Playlist {
 
     private int playlistID;
     private String playlistname;
     private int ownerID;
 
-    public PlaylistDB(int playlistID, String playlistname, int ownerID) {
+    public Playlist(int playlistID, String playlistname, int ownerID) {
         this.playlistID = playlistID;
         this.playlistname = playlistname;
         this.ownerID = ownerID;

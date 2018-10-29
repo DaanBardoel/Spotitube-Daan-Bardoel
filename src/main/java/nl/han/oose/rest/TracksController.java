@@ -1,4 +1,8 @@
-package nl.han.oose.tracks;
+package nl.han.oose.rest;
+
+import nl.han.oose.entity.DTO.TrackDTO;
+import nl.han.oose.exceptions.TracksException;
+import nl.han.oose.service.TracksService;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,8 +23,8 @@ public class TracksController {
     public Response tracksGetResponse(@QueryParam("forPlaylist") int playlistID, @QueryParam("token") String token) {
 
         try {
-            TrackReturn trackReturn = new TrackReturn(tracksService.getAllTracksExceptFromCurrentPlaylist(playlistID, token));
-            return Response.status(Response.Status.OK).entity(trackReturn).build();
+            TrackDTO trackDTO = new TrackDTO(tracksService.getAllTracksExceptFromCurrentPlaylist(playlistID, token));
+            return Response.status(Response.Status.OK).entity(trackDTO).build();
         } catch (TracksException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }

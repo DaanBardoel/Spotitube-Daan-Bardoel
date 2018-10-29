@@ -1,9 +1,13 @@
-package nl.han.oose.Playlist;
+package nl.han.oose.rest;
 
 
+import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
 import nl.han.oose.entity.Track;
-import nl.han.oose.tracks.TrackReturn;
-import nl.han.oose.tracks.TracksException;
+import nl.han.oose.entity.DTO.PlaylistDTO;
+import nl.han.oose.entity.DTO.TrackDTO;
+import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.exceptions.TracksException;
+import nl.han.oose.service.PlaylistService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,8 +25,8 @@ public class PlaylistController {
     public Response playListsGetResponse(@QueryParam("token") String token) {
 
         try {
-            PlaylistReturn playlistReturn = new PlaylistReturn(service.getPlayListStorage(token), service.returnTotalLength());
-            return Response.status(Response.Status.OK).entity(playlistReturn).build();
+            PlaylistWithLengthDTO playlistWithLengthDTO = new PlaylistWithLengthDTO(service.getPlayListStorage(token), service.returnTotalLength());
+            return Response.status(Response.Status.OK).entity(playlistWithLengthDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -34,8 +38,8 @@ public class PlaylistController {
     public Response getTracksForPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID) {
 
         try {
-            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, playlistID));
-            return Response.status(Response.Status.OK).entity(trackReturn).build();
+            TrackDTO trackDTO = new TrackDTO(service.getAllTracksForThisPlaylist(token, playlistID));
+            return Response.status(Response.Status.OK).entity(trackDTO).build();
         } catch (TracksException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -49,8 +53,8 @@ public class PlaylistController {
 
         try {
             service.addTracksToGivenPlaylist(token, id, track);
-            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, id));
-            return Response.status(Response.Status.OK).entity(trackReturn).build();
+            TrackDTO trackDTO = new TrackDTO(service.getAllTracksForThisPlaylist(token, id));
+            return Response.status(Response.Status.OK).entity(trackDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -63,8 +67,8 @@ public class PlaylistController {
 
         try {
             service.deleteGivenTrackFromPlaylist(token, playlistID, trackID);
-            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, playlistID));
-            return Response.status(Response.Status.OK).entity(trackReturn).build();
+            TrackDTO trackDTO = new TrackDTO(service.getAllTracksForThisPlaylist(token, playlistID));
+            return Response.status(Response.Status.OK).entity(trackDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -76,8 +80,8 @@ public class PlaylistController {
     public Response playListsDeleteResponse(@QueryParam("token") String token, @PathParam("id") int id) {
 
         try {
-            PlaylistReturn playlistReturn = new PlaylistReturn(service.deletePlaylistAndReturnAllPlaylists(token, id), service.returnTotalLength());
-            return Response.status(Response.Status.OK).entity(playlistReturn).build();
+            PlaylistWithLengthDTO playlistWithLengthDTO = new PlaylistWithLengthDTO(service.deletePlaylistAndReturnAllPlaylists(token, id), service.returnTotalLength());
+            return Response.status(Response.Status.OK).entity(playlistWithLengthDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -86,11 +90,11 @@ public class PlaylistController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playListsAddResponse(@QueryParam("token") String token, Playlist playlist) {
+    public Response playListsAddResponse(@QueryParam("token") String token, PlaylistDTO playlistDTO) {
 
         try {
-            PlaylistReturn playlistReturn = new PlaylistReturn(service.addNewPlaylistAndReturnAllPlaylists(token, playlist), service.returnTotalLength());
-            return Response.status(Response.Status.OK).entity(playlistReturn).build();
+            PlaylistWithLengthDTO playlistWithLengthDTO = new PlaylistWithLengthDTO(service.addNewPlaylistAndReturnAllPlaylists(token, playlistDTO), service.returnTotalLength());
+            return Response.status(Response.Status.OK).entity(playlistWithLengthDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
@@ -100,12 +104,12 @@ public class PlaylistController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response playListsEditResponse(@QueryParam("token") String token, @PathParam("id") int id, Playlist playlist) {
+    public Response playListsEditResponse(@QueryParam("token") String token, @PathParam("id") int id, PlaylistDTO playlistDTO) {
 
 
         try {
-            PlaylistReturn playlistReturn = new PlaylistReturn(service.editPlaylistAndReturnAllPlaylists(token, id, playlist), service.returnTotalLength());
-            return Response.status(Response.Status.OK).entity(playlistReturn).build();
+            PlaylistWithLengthDTO playlistWithLengthDTO = new PlaylistWithLengthDTO(service.editPlaylistAndReturnAllPlaylists(token, id, playlistDTO), service.returnTotalLength());
+            return Response.status(Response.Status.OK).entity(playlistWithLengthDTO).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }

@@ -1,16 +1,26 @@
-package nl.han.oose.Login;
+package nl.han.oose.entity;
 
-public class LoginCredentials {
+public class Account {
 
+    private int userId;
     private String user;
     private String password;
 
-    public LoginCredentials() {
-    }
-
-    public LoginCredentials(String user, String password) {
+    public Account(int userId, String user, String password) {
+        this.userId = userId;
         this.user = user;
         this.password = password;
+    }
+
+    public Account() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUser() {
@@ -31,7 +41,7 @@ public class LoginCredentials {
 
     @Override
     public String toString() {
-        return "loginCredentials{" +
+        return "Account{" +
                 "user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 '}';

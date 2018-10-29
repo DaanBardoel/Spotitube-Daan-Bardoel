@@ -1,8 +1,8 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.Login.LoginCredentials;
-import nl.han.oose.Login.LoginException;
-import nl.han.oose.entity.AccountDB;
+import nl.han.oose.entity.DTO.AccountDTO;
+import nl.han.oose.exceptions.LoginException;
+import nl.han.oose.entity.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,8 +20,8 @@ public class AccountDAO implements IAccountDAO {
     }
 
     @Override
-    public List<AccountDB> getAllAccounts() {
-        List<AccountDB> accountDBS = new ArrayList<>();
+    public List<Account> getAllAccounts() {
+        List<Account> accounts = new ArrayList<>();
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM ACCOUNT");
@@ -31,17 +31,17 @@ public class AccountDAO implements IAccountDAO {
                 int userId = resultSet.getInt("userID");
                 String user = resultSet.getString("user");
                 String password = resultSet.getString("password");
-                accountDBS.add(new AccountDB(userId, user, password));
+                accounts.add(new Account(userId, user, password));
             }
         } catch (SQLException e) {
             throw new LoginException("Oops, something went wrong in the database.");
         }
-        return accountDBS;
+        return accounts;
     }
 
     @Override
-    public AccountDB getAccountForGivenCredentials(LoginCredentials credentials) {
-        AccountDB account;
+    public Account getAccountForGivenCredentials(AccountDTO credentials) {
+        Account account;
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Account WHERE [user] = (?) AND password = (?)");
@@ -58,7 +58,7 @@ public class AccountDAO implements IAccountDAO {
                 int userID = resultSet.getInt("userID");
                 String user = resultSet.getString("user");
                 String password = resultSet.getString("password");
-                account = new AccountDB(userID, user, password);
+                account = new Account(userID, user, password);
             }
             return account;
         } catch (SQLException e) {

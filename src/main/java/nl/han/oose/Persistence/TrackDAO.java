@@ -1,7 +1,7 @@
 package nl.han.oose.Persistence;
 
 import nl.han.oose.entity.Track;
-import nl.han.oose.tracks.TracksException;
+import nl.han.oose.exceptions.TracksException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

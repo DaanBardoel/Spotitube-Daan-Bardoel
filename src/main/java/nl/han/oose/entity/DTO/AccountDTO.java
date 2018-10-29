@@ -1,26 +1,16 @@
-package nl.han.oose.entity;
+package nl.han.oose.entity.DTO;
 
-public class AccountDB {
+public class AccountDTO {
 
-    private int userId;
     private String user;
     private String password;
 
-    public AccountDB(int userId, String user, String password) {
-        this.userId = userId;
+    public AccountDTO() {
+    }
+
+    public AccountDTO(String user, String password) {
         this.user = user;
         this.password = password;
-    }
-
-    public AccountDB() {
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getUser() {
@@ -41,7 +31,7 @@ public class AccountDB {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "loginCredentials{" +
                 "user='" + user + '\'' +
                 ", password='" + password + '\'' +
                 '}';

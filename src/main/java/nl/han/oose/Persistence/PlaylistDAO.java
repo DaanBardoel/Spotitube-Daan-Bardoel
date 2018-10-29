@@ -1,9 +1,9 @@
 package nl.han.oose.Persistence;
 
-import nl.han.oose.Playlist.Playlist;
-import nl.han.oose.Playlist.PlaylistException;
-import nl.han.oose.entity.PlaylistDB;
-import nl.han.oose.token.Token;
+import nl.han.oose.entity.DTO.PlaylistDTO;
+import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.entity.Playlist;
+import nl.han.oose.entity.Token;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,8 +21,8 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public List<Playlist> getAllPlaylists(Token token) {
-        List<Playlist> playlists = new ArrayList<>();
+    public List<PlaylistDTO> getAllPlaylists(Token token) {
+        List<PlaylistDTO> playlistDTOS = new ArrayList<>();
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Playlists")
@@ -33,26 +33,26 @@ public class PlaylistDAO implements IPlaylistDAO {
                 String playlistname = resultSet.getString("playlistname");
                 int ownerID = resultSet.getInt("ownerID");
                 if (ownerID == token.getUserID()) {
-                    playlists.add(new Playlist(playlistID, playlistname, true, new String[]{}));
+                    playlistDTOS.add(new PlaylistDTO(playlistID, playlistname, true, new String[]{}));
                 } else {
-                    playlists.add(new Playlist(playlistID, playlistname, false, new String[]{}));
+                    playlistDTOS.add(new PlaylistDTO(playlistID, playlistname, false, new String[]{}));
                 }
             }
         } catch (SQLException e) {
             throw new PlaylistException("Oops. something went wrong in the database.");
         }
-        return playlists;
+        return playlistDTOS;
     }
 
     @Override
-    public void persistPlaylist(PlaylistDB playlistDB) {
+    public void persistPlaylist(Playlist playlist) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "INSERT  INTO Playlists (playlistname, ownerID) VALUES (?,?)");
         ) {
-            statement.setString(1, playlistDB.getPlaylistname());
-            statement.setInt(2, playlistDB.getOwnerID());
+            statement.setString(1, playlist.getPlaylistname());
+            statement.setInt(2, playlist.getOwnerID());
             statement.execute();
 
         } catch (SQLException e) {
@@ -76,14 +76,14 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public void editPlaylist(int id, Playlist playlist) {
+    public void editPlaylist(int id, PlaylistDTO playlistDTO) {
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement(
                         "UPDATE Playlists SET playlistname = (?) WHERE playlistID = (?)"
                 );
         ) {
-            statement.setString(1, playlist.getName());
+            statement.setString(1, playlistDTO.getName());
             statement.setInt(2, id);
             statement.execute();
         } catch (SQLException e) {
