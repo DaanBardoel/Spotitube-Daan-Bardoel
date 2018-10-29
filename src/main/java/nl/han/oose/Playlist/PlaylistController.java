@@ -3,6 +3,7 @@ package nl.han.oose.Playlist;
 
 import nl.han.oose.entity.Track;
 import nl.han.oose.tracks.TrackReturn;
+import nl.han.oose.tracks.TracksException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -35,7 +36,7 @@ public class PlaylistController {
         try {
             TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, playlistID));
             return Response.status(Response.Status.OK).entity(trackReturn).build();
-        } catch (PlaylistException e) {
+        } catch (TracksException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
     }
@@ -86,8 +87,6 @@ public class PlaylistController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsAddResponse(@QueryParam("token") String token, Playlist playlist) {
-
-
 
         try {
             PlaylistReturn playlistReturn = new PlaylistReturn(service.addNewPlaylistAndReturnAllPlaylists(token, playlist), service.returnTotalLength());
