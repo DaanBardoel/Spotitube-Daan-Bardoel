@@ -1,10 +1,10 @@
 package nl.han.oose.rest;
 
 
-import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
 import nl.han.oose.entity.Track;
-import nl.han.oose.entity.DTO.PlaylistDTO;
-import nl.han.oose.entity.DTO.TrackDTO;
+import nl.han.oose.entity.dto.PlaylistDTO;
+import nl.han.oose.entity.dto.PlaylistWithLengthDTO;
+import nl.han.oose.entity.dto.TrackDTO;
 import nl.han.oose.exceptions.PlaylistException;
 import nl.han.oose.exceptions.TracksException;
 import nl.han.oose.service.PlaylistService;

@@ -1,8 +1,8 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
-import nl.han.oose.entity.DTO.AccountDTO;
-import nl.han.oose.exceptions.LoginException;
 import nl.han.oose.entity.Account;
+import nl.han.oose.entity.dto.AccountDTO;
+import nl.han.oose.exceptions.LoginException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

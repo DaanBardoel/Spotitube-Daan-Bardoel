@@ -1,8 +1,8 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
-import nl.han.oose.entity.DTO.PlaylistDTO;
 import nl.han.oose.entity.Playlist;
 import nl.han.oose.entity.Token;
+import nl.han.oose.entity.dto.PlaylistDTO;
 
 import java.util.List;
 

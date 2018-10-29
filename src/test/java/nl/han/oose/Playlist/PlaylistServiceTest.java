@@ -1,11 +1,11 @@
 package nl.han.oose.Playlist;
 
-import nl.han.oose.Persistence.IPlaylistDAO;
-import nl.han.oose.Persistence.ITokenDAO;
-import nl.han.oose.Persistence.ITrackDAO;
-import nl.han.oose.entity.DTO.PlaylistDTO;
 import nl.han.oose.entity.Token;
+import nl.han.oose.entity.dto.PlaylistDTO;
 import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.persistence.IPlaylistDAO;
+import nl.han.oose.persistence.ITokenDAO;
+import nl.han.oose.persistence.ITrackDAO;
 import nl.han.oose.service.PlaylistServiceImpl;
 import org.junit.Rule;
 import org.junit.Test;

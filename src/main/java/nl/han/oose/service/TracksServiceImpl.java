@@ -1,8 +1,8 @@
 package nl.han.oose.service;
 
-import nl.han.oose.Persistence.ITrackDAO;
 import nl.han.oose.entity.Track;
 import nl.han.oose.exceptions.TracksException;
+import nl.han.oose.persistence.ITrackDAO;
 
 import javax.inject.Inject;
 import java.util.List;

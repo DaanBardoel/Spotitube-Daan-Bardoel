@@ -1,8 +1,8 @@
 package nl.han.oose.service;
 
-import nl.han.oose.entity.DTO.PlaylistDTO;
 import nl.han.oose.entity.Token;
 import nl.han.oose.entity.Track;
+import nl.han.oose.entity.dto.PlaylistDTO;
 import nl.han.oose.exceptions.PlaylistException;
 
 import java.util.List;

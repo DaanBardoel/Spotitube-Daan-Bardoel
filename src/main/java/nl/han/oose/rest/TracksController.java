@@ -1,6 +1,6 @@
 package nl.han.oose.rest;
 
-import nl.han.oose.entity.DTO.TrackDTO;
+import nl.han.oose.entity.dto.TrackDTO;
 import nl.han.oose.exceptions.TracksException;
 import nl.han.oose.service.TracksService;
 

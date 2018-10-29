@@ -1,7 +1,7 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
-import nl.han.oose.exceptions.PlaylistException;
 import nl.han.oose.entity.Track;
+import nl.han.oose.exceptions.PlaylistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

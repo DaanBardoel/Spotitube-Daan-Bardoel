@@ -1,7 +1,7 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
-import nl.han.oose.exceptions.LoginException;
 import nl.han.oose.entity.Token;
+import nl.han.oose.exceptions.LoginException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

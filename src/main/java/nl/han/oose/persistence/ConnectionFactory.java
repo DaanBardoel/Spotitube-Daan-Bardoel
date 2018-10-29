@@ -1,4 +1,4 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
 import java.io.IOException;
 import java.sql.Connection;

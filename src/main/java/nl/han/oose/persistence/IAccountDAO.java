@@ -1,7 +1,7 @@
-package nl.han.oose.Persistence;
+package nl.han.oose.persistence;
 
-import nl.han.oose.entity.DTO.AccountDTO;
 import nl.han.oose.entity.Account;
+import nl.han.oose.entity.dto.AccountDTO;
 
 import java.util.List;
 

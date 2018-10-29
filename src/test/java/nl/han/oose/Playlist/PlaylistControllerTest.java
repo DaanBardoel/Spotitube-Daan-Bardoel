@@ -1,7 +1,7 @@
 package nl.han.oose.Playlist;
 
-import nl.han.oose.entity.DTO.PlaylistDTO;
-import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
+import nl.han.oose.entity.dto.PlaylistDTO;
+import nl.han.oose.entity.dto.PlaylistWithLengthDTO;
 import nl.han.oose.exceptions.PlaylistException;
 import nl.han.oose.rest.PlaylistController;
 import nl.han.oose.service.PlaylistService;

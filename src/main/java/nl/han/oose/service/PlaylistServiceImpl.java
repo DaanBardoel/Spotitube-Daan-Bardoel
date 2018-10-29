@@ -1,14 +1,14 @@
 package nl.han.oose.service;
 
-import nl.han.oose.Persistence.IPlaylistDAO;
-import nl.han.oose.Persistence.IPlaylistTrackDAO;
-import nl.han.oose.Persistence.ITokenDAO;
-import nl.han.oose.Persistence.ITrackDAO;
-import nl.han.oose.entity.DTO.PlaylistDTO;
 import nl.han.oose.entity.Playlist;
 import nl.han.oose.entity.Token;
 import nl.han.oose.entity.Track;
+import nl.han.oose.entity.dto.PlaylistDTO;
 import nl.han.oose.exceptions.PlaylistException;
+import nl.han.oose.persistence.IPlaylistDAO;
+import nl.han.oose.persistence.IPlaylistTrackDAO;
+import nl.han.oose.persistence.ITokenDAO;
+import nl.han.oose.persistence.ITrackDAO;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;

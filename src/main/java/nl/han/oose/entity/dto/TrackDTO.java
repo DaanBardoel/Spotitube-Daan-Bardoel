@@ -1,4 +1,4 @@
-package nl.han.oose.entity.DTO;
+package nl.han.oose.entity.dto;
 
 import nl.han.oose.entity.Track;
 
