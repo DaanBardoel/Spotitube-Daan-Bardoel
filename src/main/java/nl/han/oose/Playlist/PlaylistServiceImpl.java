@@ -11,7 +11,6 @@ import nl.han.oose.token.Token;
 
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @Default
@@ -33,25 +32,10 @@ public class PlaylistServiceImpl implements PlaylistService {
     public List<Playlist> getPlayListStorage(String tokenString) throws PlaylistException {
         Token token = doesTokenExistInList(tokenString);
         if (token != null) {
-            return this.addDBPlaylistToPlaylistList(token);
+            return playlistDAO.getAllPlaylists(token);
         } else {
-            throw new PlaylistException("Incorrect token!");
+            throw new PlaylistException("The token does not exist. Please log in!");
         }
-    }
-
-
-    // TODO: 28/10/2018 Make this method unnecesary by letting getAllPlaylists return just a playlist
-    private List<Playlist> addDBPlaylistToPlaylistList(Token token) {
-        List<Playlist> playlists = new ArrayList<>();
-        List<PlaylistDB> playlistDBs = playlistDAO.getAllPlaylists();
-        for (PlaylistDB playlistDBIndex : playlistDBs) {
-            if (token.getUserID() == playlistDBIndex.getOwnerID()) {
-                playlists.add(new Playlist(playlistDBIndex.getPlaylistID(), playlistDBIndex.getPlaylistname(), true, new String[]{}));
-            } else {
-                playlists.add(new Playlist(playlistDBIndex.getPlaylistID(), playlistDBIndex.getPlaylistname(), false, new String[]{}));
-            }
-        }
-        return playlists;
     }
 
     @Override
@@ -68,7 +52,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             int defaultPlaylistIDPlaceholder = -1;
             PlaylistDB playlistDB = new PlaylistDB(defaultPlaylistIDPlaceholder, playlist.getName(), token.getUserID());
             playlistDAO.persistPlaylist(playlistDB);
-            return this.addDBPlaylistToPlaylistList(token);
+            return playlistDAO.getAllPlaylists(token);
         } else {
             throw new PlaylistException("The token does not exist. Please log in!");
         }
@@ -81,7 +65,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         if (token != null) {
             playlistDAO.deletePlaylist(id);
-            return this.addDBPlaylistToPlaylistList(token);
+            return playlistDAO.getAllPlaylists(token);
         } else {
             throw new PlaylistException("The token does not exist. Please log in!");
         }
@@ -94,7 +78,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         if (token != null) {
             playlistDAO.editPlaylist(id, playlist);
-            return this.addDBPlaylistToPlaylistList(token);
+            return playlistDAO.getAllPlaylists(token);
         } else {
             throw new PlaylistException("The token does not exist. Please log in!");
         }
@@ -126,7 +110,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Token doesTokenExistInList(String tokenstring) {
         TokenDB tokenDB = tokenDAO.getTokenForGivenTokenString(tokenstring);
-
         if (tokenDB == null) {
             return null;
         } else {

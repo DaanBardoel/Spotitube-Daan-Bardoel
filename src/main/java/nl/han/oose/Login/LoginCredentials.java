@@ -5,6 +5,14 @@ public class LoginCredentials {
     private String user;
     private String password;
 
+    public LoginCredentials() {
+    }
+
+    public LoginCredentials(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
+
     public String getUser() {
         return user;
     }

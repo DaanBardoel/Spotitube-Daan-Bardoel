@@ -1,5 +1,6 @@
 package nl.han.oose.Persistence;
 
+import nl.han.oose.Login.LoginException;
 import nl.han.oose.entity.TokenDB;
 
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class TokenDAO implements ITokenDAO {
                 tokenDBs.add(new TokenDB(token, user, dateString));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
 
         }
         return tokenDBs;
@@ -51,7 +52,7 @@ public class TokenDAO implements ITokenDAO {
             statement.execute();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
     }
 
@@ -65,7 +66,7 @@ public class TokenDAO implements ITokenDAO {
             statement.setInt(1, tokenDB.getuser());
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
     }
 
@@ -84,7 +85,7 @@ public class TokenDAO implements ITokenDAO {
 
             return getTokenDB(resultSet, val);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
     }
 
@@ -103,7 +104,7 @@ public class TokenDAO implements ITokenDAO {
 
             return getTokenDB(resultSet, val);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
     }
 

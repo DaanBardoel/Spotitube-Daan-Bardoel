@@ -1,6 +1,7 @@
 package nl.han.oose.Persistence;
 
 import nl.han.oose.Login.LoginCredentials;
+import nl.han.oose.Login.LoginException;
 import nl.han.oose.entity.AccountDB;
 
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class AccountDAO implements IAccountDAO {
                 accountDBS.add(new AccountDB(userId, user, password));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
         return accountDBS;
     }
@@ -61,7 +62,7 @@ public class AccountDAO implements IAccountDAO {
             }
             return account;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Oops, something went wrong in the database.");
         }
     }
 }

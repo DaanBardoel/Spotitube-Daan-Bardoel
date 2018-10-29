@@ -5,7 +5,7 @@ public class LoginException extends RuntimeException {
     private String exceptionname;
 
     public LoginException(String exceptionname) {
-        this.exceptionname = exceptionname;
+        super(exceptionname);
     }
 
     public String getExceptionname() {

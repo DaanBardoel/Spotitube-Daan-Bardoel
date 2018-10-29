@@ -1,7 +1,9 @@
 package nl.han.oose.Persistence;
 
 import nl.han.oose.Playlist.Playlist;
+import nl.han.oose.Playlist.PlaylistException;
 import nl.han.oose.entity.PlaylistDB;
+import nl.han.oose.token.Token;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,8 +21,8 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public List<PlaylistDB> getAllPlaylists() {
-        List<PlaylistDB> playlistDBs = new ArrayList<>();
+    public List<Playlist> getAllPlaylists(Token token) {
+        List<Playlist> playlists = new ArrayList<>();
         try (
                 Connection connection = connectionFactory.getConnection();
                 PreparedStatement statement = connection.prepareStatement("SELECT * FROM Playlists")
@@ -30,12 +32,16 @@ public class PlaylistDAO implements IPlaylistDAO {
                 int playlistID = resultSet.getInt("playlistID");
                 String playlistname = resultSet.getString("playlistname");
                 int ownerID = resultSet.getInt("ownerID");
-                playlistDBs.add(new PlaylistDB(playlistID, playlistname, ownerID));
+                if (ownerID == token.getUserID()) {
+                    playlists.add(new Playlist(playlistID, playlistname, true, new String[]{}));
+                } else {
+                    playlists.add(new Playlist(playlistID, playlistname, false, new String[]{}));
+                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PlaylistException("Oops. something went wrong in the database.");
         }
-        return playlistDBs;
+        return playlists;
     }
 
     @Override
@@ -50,7 +56,7 @@ public class PlaylistDAO implements IPlaylistDAO {
             statement.execute();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PlaylistException("Oops. something went wrong in the database.");
         }
     }
 
@@ -65,7 +71,7 @@ public class PlaylistDAO implements IPlaylistDAO {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PlaylistException("Oops. something went wrong in the database.");
         }
     }
 
@@ -81,7 +87,7 @@ public class PlaylistDAO implements IPlaylistDAO {
             statement.setInt(2, id);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PlaylistException("Oops. something went wrong in the database.");
         }
     }
 }

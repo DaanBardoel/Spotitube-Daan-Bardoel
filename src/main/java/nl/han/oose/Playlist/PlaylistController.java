@@ -13,15 +13,14 @@ import javax.ws.rs.core.Response;
 public class PlaylistController {
 
     @Inject
-    private PlaylistService handler;
+    private PlaylistService service;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsGetResponse(@QueryParam("token") String token) {
 
-        PlaylistReturn playlistReturn = new PlaylistReturn(handler.getPlayListStorage(token), handler.returnTotalLength());
-
         try {
+            PlaylistReturn playlistReturn = new PlaylistReturn(service.getPlayListStorage(token), service.returnTotalLength());
             return Response.status(Response.Status.OK).entity(playlistReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -33,9 +32,8 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksForPlaylist(@QueryParam("token") String token, @PathParam("id") int playlistID) {
 
-        TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, playlistID));
-
         try {
+            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, playlistID));
             return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -49,8 +47,8 @@ public class PlaylistController {
     public Response insertTrackIntoPlaylist(@PathParam("id") int id, @QueryParam("token") String token, Track track) {
 
         try {
-            handler.addTracksToGivenPlaylist(token, id, track);
-            TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, id));
+            service.addTracksToGivenPlaylist(token, id, track);
+            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, id));
             return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -63,8 +61,8 @@ public class PlaylistController {
     public Response deleteNumberFromPlaylist(@PathParam("playlistid") int playlistID, @PathParam("trackid") int trackID, @QueryParam("token") String token) {
 
         try {
-            handler.deleteGivenTrackFromPlaylist(token, playlistID, trackID);
-            TrackReturn trackReturn = new TrackReturn(handler.getAllTracksForThisPlaylist(token, playlistID));
+            service.deleteGivenTrackFromPlaylist(token, playlistID, trackID);
+            TrackReturn trackReturn = new TrackReturn(service.getAllTracksForThisPlaylist(token, playlistID));
             return Response.status(Response.Status.OK).entity(trackReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -76,9 +74,8 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsDeleteResponse(@QueryParam("token") String token, @PathParam("id") int id) {
 
-        PlaylistReturn playlistReturn = new PlaylistReturn(handler.deletePlaylistAndReturnAllPlaylists(token, id), handler.returnTotalLength());
-
         try {
+            PlaylistReturn playlistReturn = new PlaylistReturn(service.deletePlaylistAndReturnAllPlaylists(token, id), service.returnTotalLength());
             return Response.status(Response.Status.OK).entity(playlistReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -90,9 +87,10 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsAddResponse(@QueryParam("token") String token, Playlist playlist) {
 
-        PlaylistReturn playlistReturn = new PlaylistReturn(handler.addNewPlaylistAndReturnAllPlaylists(token, playlist), handler.returnTotalLength());
+
 
         try {
+            PlaylistReturn playlistReturn = new PlaylistReturn(service.addNewPlaylistAndReturnAllPlaylists(token, playlist), service.returnTotalLength());
             return Response.status(Response.Status.OK).entity(playlistReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
@@ -105,9 +103,9 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response playListsEditResponse(@QueryParam("token") String token, @PathParam("id") int id, Playlist playlist) {
 
-        PlaylistReturn playlistReturn = new PlaylistReturn(handler.editPlaylistAndReturnAllPlaylists(token, id, playlist), handler.returnTotalLength());
 
         try {
+            PlaylistReturn playlistReturn = new PlaylistReturn(service.editPlaylistAndReturnAllPlaylists(token, id, playlist), service.returnTotalLength());
             return Response.status(Response.Status.OK).entity(playlistReturn).build();
         } catch (PlaylistException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();

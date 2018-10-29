@@ -1,6 +1,7 @@
 package nl.han.oose.Persistence;
 
 import nl.han.oose.entity.Track;
+import nl.han.oose.tracks.TracksException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +34,7 @@ public class TrackDAO implements ITrackDAO {
             }
             return durationToReturn;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new TracksException("Oops, something went wrong in the database.");
         }
     }
 
@@ -48,7 +49,7 @@ public class TrackDAO implements ITrackDAO {
             ResultSet resultSet = statement.executeQuery();
             tracks = resultsetMethod(resultSet);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new TracksException("Oops, something went wrong in the database.");
         }
 
         return tracks;
@@ -67,7 +68,7 @@ public class TrackDAO implements ITrackDAO {
             ResultSet resultSet = statement.executeQuery();
             tracks = resultsetMethod(resultSet);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new TracksException("Oops, something went wrong in the database.");
         }
 
         return tracks;

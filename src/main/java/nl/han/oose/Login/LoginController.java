@@ -1,7 +1,5 @@
 package nl.han.oose.Login;
 
-import nl.han.oose.Playlist.PlaylistException;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -23,7 +21,7 @@ public class LoginController {
         //try catch block
         try {
             return Response.status(Response.Status.OK).entity(loginService.loginNewVersion(creds)).build();
-        } catch (PlaylistException e) {
+        } catch (LoginException e) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(e.getMessage()).build();
         }
     }

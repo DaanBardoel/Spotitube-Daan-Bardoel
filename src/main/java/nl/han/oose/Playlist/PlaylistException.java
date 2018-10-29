@@ -2,18 +2,18 @@ package nl.han.oose.Playlist;
 
 public class PlaylistException extends RuntimeException {
 
-    private String PlaylistExceptionDescription;
+    private String playlistExceptionDescription;
 
-    public PlaylistException(String PlaylistExceptionDescription) {
-        this.PlaylistExceptionDescription = PlaylistExceptionDescription;
+    public PlaylistException(String playlistExceptionDescription) {
+        super(playlistExceptionDescription);
     }
 
     public String getPlaylistExceptionDescription() {
-        return PlaylistExceptionDescription;
+        return playlistExceptionDescription;
     }
 
     public void setPlaylistExceptionDescription(String playlistExceptionDescription) {
-        PlaylistExceptionDescription = playlistExceptionDescription;
+        this.playlistExceptionDescription = playlistExceptionDescription;
     }
 
 

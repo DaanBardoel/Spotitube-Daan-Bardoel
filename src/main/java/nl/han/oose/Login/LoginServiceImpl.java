@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
     public TokenOnlyForReturn loginNewVersion(LoginCredentials credentials) throws LoginException {
         AccountDB account = accountDAO.getAccountForGivenCredentials(credentials);
         if (account == null) {
-            throw new LoginException("gegevens niet correct!");
+            throw new LoginException("Incorrect credentials!");
         } else {
             return this.getTokenOnlyForReturn(account);
         }

@@ -5,7 +5,7 @@ public class TracksException extends RuntimeException {
     private String exceptionDescription;
 
     public TracksException(String exceptionDescription) {
-        this.exceptionDescription = exceptionDescription;
+        super(exceptionDescription);
     }
 
     public String getExceptionDescription() {
