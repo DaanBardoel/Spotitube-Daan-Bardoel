@@ -4,11 +4,11 @@ import java.util.List;
 
 public class PlaylistWithLengthDTO {
 
-    private List<PlaylistDTO> playlistDTOS;
+    private List<PlaylistDTO> playlists;
     private int length;
 
-    public PlaylistWithLengthDTO(List<PlaylistDTO> playlistDTOS, int length) {
-        this.playlistDTOS = playlistDTOS;
+    public PlaylistWithLengthDTO(List<PlaylistDTO> playlists, int length) {
+        this.playlists = playlists;
         this.length = length;
     }
 
@@ -20,11 +20,11 @@ public class PlaylistWithLengthDTO {
         this.length = length;
     }
 
-    public List<PlaylistDTO> getPlaylistDTOS() {
-        return playlistDTOS;
+    public List<PlaylistDTO> getPlaylists() {
+        return playlists;
     }
 
-    public void setPlaylistDTOS(List<PlaylistDTO> playlistDTOS) {
-        this.playlistDTOS = playlistDTOS;
+    public void setPlaylists(List<PlaylistDTO> playlists) {
+        this.playlists = playlists;
     }
 }

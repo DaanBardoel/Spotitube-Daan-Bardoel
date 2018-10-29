@@ -1,7 +1,7 @@
 package nl.han.oose.Playlist;
 
-import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
 import nl.han.oose.entity.DTO.PlaylistDTO;
+import nl.han.oose.entity.DTO.PlaylistWithLengthDTO;
 import nl.han.oose.exceptions.PlaylistException;
 import nl.han.oose.rest.PlaylistController;
 import nl.han.oose.service.PlaylistService;
@@ -43,7 +43,7 @@ public class PlaylistControllerTest {
 
         PlaylistWithLengthDTO resultPlaylistWithLengthDTO = (PlaylistWithLengthDTO) response.getEntity();
 
-        assertEquals(playlistWithLengthDTO.getPlaylistDTOS(), resultPlaylistWithLengthDTO.getPlaylistDTOS());
+        assertEquals(playlistWithLengthDTO.getPlaylists(), resultPlaylistWithLengthDTO.getPlaylists());
 
         assertEquals(playlistWithLengthDTO.getLength(), resultPlaylistWithLengthDTO.getLength());
     }
